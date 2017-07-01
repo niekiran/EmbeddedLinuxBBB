@@ -1,0 +1,213 @@
+/*
+ ============================================================================
+ Name        : 7segcnt.c
+ Author      : Kiran
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ DIY: IMPLEMENT UPDOWN COUNTING
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include<stdint.h>
+
+uint8_t numbers[10]={0x77,0x06,0xB3,0x97,0x66,0xD5,0xf6,0x07,0xf7,0XD7};
+
+P8.7 ( GPIO_66); a
+P8.8 ( GPIO_67); b
+P8.9 ( GPIO_69); c
+P8.10 ( GPIO_68);d
+P8.11 ( GPIO_45);e
+P8.12 ( GPIO_44);f
+P8.14 ( GPIO_26);g
+P8.15 ( GPIO_47);h
+
+#define SYS_GPIO_PATH "/sys/class/gpio/"
+
+/* 0 (in) 1(out) */
+int initialize_all_gpios(char *path,)
+{
+
+	/* first init the direction as out */
+	/* open the file in both read and write mode */
+	FILE *sysgpio = fopen(SYS_GPIO_PATH "/gpio66/direction", "w+" );
+	/* fopen returns 0, the NULL pointer, on failure */
+	if(sysgpio1 != 0)
+	{
+		fprintf(sysgpio1,"%s","out");
+	}
+	else
+	{
+		return -1;
+	}
+
+
+/* first init the direction as out */
+	/* open the file in both read and write mode */
+	FILE *sysgpio1 = fopen(SYS_GPIO_PATH "/gpio66/direction", "w+" );
+	/* fopen returns 0, the NULL pointer, on failure */
+	if(sysgpio1 != 0)
+	{
+		fprintf(sysgpio1,"%s","out");
+	}
+	else
+	{
+		return -1;
+	}
+
+/* first init the direction as out */
+	/* open the file in both read and write mode */
+	FILE *sysgpio1 = fopen(SYS_GPIO_PATH "/gpio66/direction", "w+" );
+	/* fopen returns 0, the NULL pointer, on failure */
+	if(sysgpio1 != 0)
+	{
+		fprintf(sysgpio1,"%s","out");
+	}
+	else
+	{
+		return -1;
+	}
+
+
+
+/* first init the direction as out */
+	/* open the file in both read and write mode */
+	FILE *sysgpio1 = fopen(SYS_GPIO_PATH "/gpio66/direction", "w+" );
+	/* fopen returns 0, the NULL pointer, on failure */
+	if(sysgpio1 != 0)
+	{
+		fprintf(sysgpio1,"%s","out");
+	}
+	else
+	{
+		return -1;
+	}
+
+/* first init the direction as out */
+	/* open the file in both read and write mode */
+	FILE *sysgpio1 = fopen(SYS_GPIO_PATH "/gpio66/direction", "w+" );
+	/* fopen returns 0, the NULL pointer, on failure */
+	if(sysgpio1 != 0)
+	{
+		fprintf(sysgpio1,"%s","out");
+	}
+	else
+	{
+		return -1;
+	}
+
+
+/* first init the direction as out */
+	/* open the file in both read and write mode */
+	FILE *sysgpio1 = fopen(SYS_GPIO_PATH "/gpio66/direction", "w+" );
+	/* fopen returns 0, the NULL pointer, on failure */
+	if(sysgpio1 != 0)
+	{
+		fprintf(sysgpio1,"%s","out");
+	}
+	else
+	{
+		return -1;
+	}
+
+
+/* first init the direction as out */
+	/* open the file in both read and write mode */
+	FILE *sysgpio1 = fopen(SYS_GPIO_PATH "/gpio66/direction", "w+" );
+	/* fopen returns 0, the NULL pointer, on failure */
+	if(sysgpio1 != 0)
+	{
+		fprintf(sysgpio1,"%s","out");
+	}
+	else
+	{
+		return -1;
+	}
+
+
+/* first init the direction as out */
+	/* open the file in both read and write mode */
+	FILE *sysgpio1 = fopen(SYS_GPIO_PATH "/gpio66/direction", "w+" );
+	/* fopen returns 0, the NULL pointer, on failure */
+	if(sysgpio1 != 0)
+	{
+		fprintf(sysgpio1,"%s","out");
+	}
+	else
+	{
+		return -1;
+	}
+
+
+
+
+
+
+}
+
+void start_downcounting(int delay_value)
+{
+
+
+
+}
+
+void start_downcounting(int delay_value)
+{
+
+
+
+}
+
+void start_updowncounting(int delay_value)
+{
+
+	/* DIY : Student has to implement this */
+	printf("/* DIY : Student has to implement this */\n");
+
+
+}
+
+void start_randomcounting(int delay_value)
+{
+
+}
+
+int main(int argc, char *argv[]) {
+	printf("This program controls the USER LED3\n");
+
+	if ( argc != 3 ) /* argc should be 3 for correct execution */
+	{
+
+		printf( "usage: %s <direction> <delay>\n", argv[0] );
+		printf( "valid direction : up, down, updown\n");
+		printf ("recommended delay range : 0 to 1000\n");
+	}
+	else
+	{
+    	/* argc is correct , lets check argv */
+    	if (strcmp(argv[1], "up") == 0)
+    	{
+    		start_upcounting(argv[2]);
+    	}
+    	else if (strcmp(argv[1], "down") == 0)
+    	{
+    		start_downcounting(argv[2]);
+    	}
+    	else if (strcmp(argv[1], "updown") == 0)
+    	{
+    		start_updowncounting(argv[2]);
+    	}
+    	else if (strcmp(argv[1], "random") == 0)
+    	{
+    		start_randomcounting(argv[2]);
+    	}
+    	else /* default: */
+    	{
+    		printf("Invalid direction values\n");
+    		printf( "valid direction values : up, down,updown,random\n");
+    	}
+	}
+}

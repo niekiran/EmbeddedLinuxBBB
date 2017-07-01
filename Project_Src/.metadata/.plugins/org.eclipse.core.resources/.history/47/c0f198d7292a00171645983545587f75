@@ -1,0 +1,51 @@
+/*
+ ============================================================================
+ Name        : 7segcnt.c
+ Author      : Kiran
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include<stdint.h>
+
+uint8_t numbers[10]={0x77,0x06,0xB3,0x97,0x66,0xD5,0xf6,0x07,0xf7,0XD7};
+
+
+void start_downcounting(argv[2]);
+
+int main(int argc, char *argv[]) {
+	printf("This program controls the USER LED3\n");
+
+	if ( argc != 3 ) /* argc should be 3 for correct execution */
+	{
+
+		printf( "usage: %s <direction> <delay>\n", argv[0] );
+		printf( "valid direction : up, down\n");
+		printf ("recommended delay range : 0 to 1000\n");
+	}
+	else
+	{
+    	/* argc is correct , lets check argv */
+    	if (strcmp(argv[1], "up") == 0)
+    	{
+    		start_upcounting(argv[2]);
+    	}
+    	else if (strcmp(argv[1], "down") == 0)
+    	{
+    		start_downcounting(argv[2]);
+    	}
+    	else if (strcmp(argv[1], "updown") == 0)
+    	{
+    		start_updowncounting(argv[2]);
+    	}
+    	else /* default: */
+    	{
+    		printf("Invalid control option\n");
+    		printf( "valid control_options : brightness, trigger\n");
+    	}
+	}
+}

@@ -1,0 +1,9 @@
+build.all.configs.enabled=false
+build.proj.ref.configs.enabled=false
+eclipse.preferences.version=1
+environment/workspace/PATH/delimiter=;
+environment/workspace/PATH/operation=append
+environment/workspace/PATH/value=C\:\\Users\\kiran\\Documents\\BBB_eclipse\\gcc-linaro-6.3.1-2017.02-i686-mingw32_arm-linux-gnueabihf\\gcc-linaro-6.3.1-2017.02-i686-mingw32_arm-linux-gnueabihf\\bin
+environment/workspace/append=true
+environment/workspace/appendContributed=true
+macros/workspace=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<macros/>\r\n

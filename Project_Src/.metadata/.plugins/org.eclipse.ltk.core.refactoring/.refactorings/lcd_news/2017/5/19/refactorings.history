@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;lcd_news/src/simple.c&apos; to &apos;json_req.c&apos;" description="Rename resource &apos;simple.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/simple.c" name="json_req.c" stamp="1494344235567" updateReferences="true"/>
+</session>

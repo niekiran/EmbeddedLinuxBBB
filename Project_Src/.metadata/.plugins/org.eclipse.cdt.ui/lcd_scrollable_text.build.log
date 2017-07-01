@@ -1,0 +1,23 @@
+21:00:36 **** Incremental Build of configuration Debug for project lcd_scrollable_text ****
+make all 
+'Building file: ../src/lcd_text.c'
+'Invoking: Cross GCC Compiler'
+arm-linux-gnueabihf-gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/lcd_text.d" -MT"src/lcd_text.o" -o "src/lcd_text.o" "../src/lcd_text.c"
+../src/lcd_text.c: In function 'main':
+../src/lcd_text.c:314:24: warning: pointer targets in passing argument 1 of 'lcd_print_string' differ in signedness [-Wpointer-sign]
+       lcd_print_string("**");
+                        ^~~~
+In file included from ../src/lcd_text.c:30:0:
+../src/lcd_driver.h:41:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void lcd_print_string(uint8_t *message);
+      ^~~~~~~~~~~~~~~~
+'Finished building: ../src/lcd_text.c'
+' '
+'Building target: lcd_scrollable_text'
+'Invoking: Cross GCC Linker'
+arm-linux-gnueabihf-gcc  -o "lcd_scrollable_text"  ./src/lcd_driver.o ./src/lcd_text.o   
+'Finished building target: lcd_scrollable_text'
+' '
+
+21:00:37 Build Finished (took 874ms)
+

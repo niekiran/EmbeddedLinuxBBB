@@ -1,0 +1,15 @@
+18:50:26 **** Incremental Build of configuration Debug for project lcd_text ****
+make all 
+'Building file: ../src/lcd_text.c'
+'Invoking: Cross GCC Compiler'
+arm-linux-gnueabihf-gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/lcd_text.d" -MT"src/lcd_text.o" -o "src/lcd_text.o" "../src/lcd_text.c"
+'Finished building: ../src/lcd_text.c'
+' '
+'Building target: lcd_text'
+'Invoking: Cross GCC Linker'
+arm-linux-gnueabihf-gcc  -o "lcd_text"  ./src/lcd_driver.o ./src/lcd_text.o   
+'Finished building target: lcd_text'
+' '
+
+18:50:27 Build Finished (took 927ms)
+

@@ -1,0 +1,181 @@
+/*
+ * main.c
+ *
+ *  Created on: 11-May-2017
+ *      Author: kiran
+ */
+
+/*
+                  BBB schematic             operating system
+
+ pin P9_19        I2c2_SCL                   I2c1_SCL
+ pin P9_20        I2c2_SDA                   I2c1_SDA */
+
+
+#include <errno.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdint.h>
+
+#define I2C_DEVICE_FILE   "/dev/i2c-2"
+
+
+#define MPU6050_REG_POWER 				0x6B
+#define MPU6050_REG_ACCEL_CONFIG 		0x1C
+#define MPU6050_REG_GYRO_CONFIG 		0x1B
+
+#define MPU6050_REG_ACC_X_HIGH          0x3B
+#define MPU6050_REG_ACC_X_LOW           0x3C
+#define MPU6050_REG_ACC_Y_HIGH          0x3D
+#define MPU6050_REG_ACC_Y_LOW           0x3E
+#define MPU6050_REG_ACC_Z_HIGH          0x3F
+#define MPU6050_REG_ACC_Z_LOW           0x40
+
+
+#define MPU6050_REG_GYRO_X_HIGH          0x43
+#define MPU6050_REG_GYRO_X_LOW           0x44
+#define MPU6050_REG_GYRO_Y_HIGH          0x45
+#define MPU6050_REG_GYRO_Y_LOW           0x46
+#define MPU6050_REG_GYRO_Z_HIGH          0x47
+#define MPU6050_REG_GYRO_Z_LOW           0x48
+
+
+
+
+#define MPU6050_SLAVE_ADDR 0x68
+#define MAX_VALUE 50
+
+int fd;
+
+
+int mpu6050_write(uint8_t addr, uint16_t data)
+{
+  int ret;
+  char buf[2];
+  buf[0]=addr;
+  buf[1]=data;
+  ret = write(fd,buf,2);
+  if (ret <= 0)
+  {
+	  perror("write failed\n");
+	  return -1;
+  }
+  return 0;
+}
+
+int mpu6050_read(uint8_t addr, char *pBuffer,uint32_t len)
+{
+  int ret;
+  char buf[2];
+  buf[0]=addr;
+  ret = write(fd,buf,1);
+  if (ret <= 0)
+  {
+	  perror("write address failed\n");
+	  return -1;
+  }
+
+  ret = read(fd,pBuffer,len);
+  if(ret <= 0)
+  {
+	  perror("read failed\n");
+  }
+  return 0;
+}
+
+
+
+void mpu6050_init()
+{
+
+	// 1. disable sleep mode
+	mpu6050_write(MPU6050_REG_POWER, 0x00);
+	usleep(500);
+
+	// adujst full scale for gyro and acc
+	mpu6050_write(MPU6050_REG_ACCEL_CONFIG, 0x18);
+	usleep(500);
+	mpu6050_write(MPU6050_REG_GYRO_CONFIG, 0x18);
+	usleep(500);
+
+
+}
+
+void mpu6050_read_acc(short int *pBuffer)
+{
+	char acc_buffer[6];
+	//1 first write the base address
+	mpu6050_read(MPU6050_REG_ACC_X_HIGH,acc_buffer,6);
+
+#if 0
+	//2. then read 6 bytes.
+//    printf ( "%d %d %d %d %d %d\n",acc_buffer[0],acc_buffer[1],acc_buffer[2],acc_buffer[3], \
+ //   		acc_buffer[4],acc_buffer[5] );
+#endif
+	pBuffer[0] = (int) ( (acc_buffer[0] << 8) |  acc_buffer[1] );
+	pBuffer[1] = (int) ( (acc_buffer[2] << 8) |  acc_buffer[3] );
+	pBuffer[2] = (int) ( (acc_buffer[4] << 8) |  acc_buffer[5] );
+
+}
+
+void mpu6050_read_gyro(short *pBuffer)
+{
+	char gyro_buffer[6];
+	//1 first write the base address
+	mpu6050_read(MPU6050_REG_GYRO_X_HIGH,gyro_buffer,6);
+
+	//2. then read 6 bytes.
+
+	pBuffer[0] =  ( (gyro_buffer[0] << 8) +  gyro_buffer[1] );
+	pBuffer[1] =  ( (gyro_buffer[2] << 8) +  gyro_buffer[3] );
+	pBuffer[2] =  ( (gyro_buffer[4] << 8) +  gyro_buffer[5] );
+
+}
+
+
+
+
+
+
+int main(void)
+{
+
+	 char filename[40];
+	 sprintf(filename,I2C_DEVICE_FILE);
+	if ((fd = open(filename,O_RDWR)) < 0) {
+		printf("Failed to open the bus.");
+		return -1;
+	}
+
+	if (ioctl(fd,I2C_SLAVE,MPU6050_SLAVE_ADDR) < 0) {
+	        printf("Failed to acquire bus access and/or talk to slave.\n");
+	        /* ERROR HANDLING; you can check errno to see what went wrong */
+	        close(fd);
+	        return -1;
+	}
+
+	mpu6050_init();
+
+	short int acc_value[3],gyro_value[3];
+
+	while(1)
+	{
+       mpu6050_read_acc(acc_value);
+       mpu6050_read_gyro(gyro_value);
+       printf("Acc(g)=> X:%d Y:%d Z:%d gyro(dps)=> X:%d Y:%d Z:%d \n", \
+    	   acc_value[0]/2048,acc_value[1]/2048,acc_value[2]/2048,gyro_value[0]/16.4, \
+		   gyro_value[1]/16.4,gyro_value[2]/16.4);
+
+
+	}
+
+}
+
+

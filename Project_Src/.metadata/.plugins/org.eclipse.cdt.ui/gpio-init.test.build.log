@@ -1,0 +1,6 @@
+16:14:29 **** Build of configuration Debug for project gpio-init.test ****
+make all 
+make: Nothing to be done for `all'.
+
+16:14:30 Build Finished (took 259ms)
+

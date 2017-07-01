@@ -1,0 +1,11 @@
+07:13:21 **** Clean-only build of configuration Debug for project 7segmentbutton ****
+make clean 
+rm -rf  ./src/7segmentbutton.o  ./src/7segmentbutton.d  7segmentbutton
+process_begin: CreateProcess(NULL, rm -rf ./src/7segmentbutton.o ./src/7segmentbutton.d 7segmentbutton, ...) failed.
+make (e=2): The system cannot find the file specified.
+
+make: [clean] Error 2 (ignored)
+' '
+
+07:13:21 Build Finished (took 300ms)
+

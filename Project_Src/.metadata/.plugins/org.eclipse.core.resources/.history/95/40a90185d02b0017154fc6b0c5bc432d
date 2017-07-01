@@ -1,0 +1,349 @@
+/*
+ ============================================================================
+ Name        : 7segcnt.c
+ Author      : Kiran
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ DIY: IMPLEMENT UPDOWN COUNTING
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <poll.h>
+
+uint8_t numbers[]={0x77,0x06,0xB3,0x97,0xc6,0xD5,0xf5,0x07,0xf7,0XD7,0x00};
+
+#define MAX_LEN 100
+
+
+#define DIGIT_ON 1
+#define DIGIT_OFF 0
+
+
+#define SYS_GPIO_DIR_PATH "/sys/class/gpio"
+
+/*
+P8.7 ( GPIO_66); a
+P8.8 ( GPIO_67); b
+P8.9 ( GPIO_69); c
+P8.10 ( GPIO_68);dp (h)
+P8.11 ( GPIO_45);d
+P8.12 ( GPIO_44);e
+P8.14 ( GPIO_26);f
+P8.16 ( GPIO_46);g */
+
+#define GPIO_66_P8_7_SEGA  		66
+#define GPIO_67_P8_8_SEGB 		67
+#define GPIO_69_P8_9_SEGC 		69
+#define GPIO_68_P8_10_DP 		68
+#define GPIO_45_P8_11_SEGD 		45
+#define GPIO_44_P8_12_SEGE 		44
+#define GPIO_26_P8_14_SEGF 		26
+#define GPIO_46_P8_16_SEGG 		46
+
+
+#define HIGH_VALUE 1
+#define LOW_VALUE  0
+
+#define OUT_DIR HIGH_VALUE
+#define IN_DIR  LOW_VALUE
+
+
+
+
+
+/* This is the array of file descriptors for each segment of the display */
+int fdgpio[8];
+
+
+int gpio_configure_dir(uint32_t gpio_num, uint8_t dir_value)
+{
+	int fd;
+	char buf[MAX_LEN];
+
+	snprintf(buf, sizeof(buf), SYS_GPIO_DIR_PATH "/gpio%d/direction", gpio_num);
+
+	fd = open(buf, O_WRONLY);
+	if (fd < 0) {
+		perror("gpio direction configure\n");
+		return fd;
+	}
+
+	if (dir_value)
+		write(fd, "out", 4);
+	else
+		write(fd, "in", 3);
+
+	close(fd);
+	return 0;
+}
+
+
+int gpio_write_value(uint32_t gpio_num, uint8_t out_value)
+{
+	int fd;
+	char buf[MAX_LEN];
+
+	snprintf(buf, sizeof(buf), SYS_GPIO_DIR_PATH "/gpio%d/value", gpio_num);
+
+	fd = open(buf, O_WRONLY);
+	if (fd < 0) {
+		perror("gpio write value");
+		return fd;
+	}
+
+	write(fd, &out_value, 1);
+
+	close(fd);
+	return 0;
+}
+
+
+int gpio_read_value(uint32_t gpio_num)
+{
+	int fd;
+	uint8_t read_value=0;
+	char buf[MAX_LEN];
+
+	snprintf(buf, sizeof(buf), SYS_GPIO_DIR_PATH "/gpio%d/value", gpio_num);
+
+	fd = open(buf, O_WRONLY);
+	if (fd < 0) {
+		perror("gpio read value");
+		return fd;
+	}
+
+	read(fd, &read_value, 1);
+
+	close(fd);
+	return read_value;
+}
+
+
+int gpio_configure_edge(uint32_t gpio_num, char *edge)
+{
+	int fd;
+	char buf[MAX_LEN];
+
+	snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/edge", gpio_num);
+
+	fd = open(buf, O_WRONLY);
+	if (fd < 0) {
+		perror("gpio configure edge");
+		return fd;
+	}
+
+	write(fd, edge, strlen(edge) + 1);
+	close(fd);
+	return 0;
+}
+
+
+int gpio_file_open(uint32_t gpio_num)
+{
+	int fd;
+	char buf[MAX_LEN];
+
+	snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", gpio_num);
+
+	fd = open(buf, O_RDONLY | O_NONBLOCK );
+	if (fd < 0) {
+		perror("gpio file open");
+	}
+	return fd;
+}
+
+
+int gpio_file_close(int fd)
+{
+	return close(fd);
+}
+
+
+
+void digit_control(int digit_number, int value)
+{
+
+
+}
+void Write_number_to_7segdisplay(uint8_t value)
+{
+
+	int i=0,value1;
+
+	for (i=0;i< 8;i++)
+	{
+		value1 =  ( value & ( 1 << i) );
+		value1 = value1 >> i;
+		fprintf(fdgpio[i],"%d", value1 );
+		fflush(fdgpio[i]);
+	}
+
+}
+
+
+void dispaly_numbers(uint32_t number)
+{
+
+for(int digit = 4 ; digit > 0 ; digit--) {
+
+	//Turn on a digit for a short amount of time
+	switch(digit) {
+	case 1:
+	  digit_control(1, DIGIT_ON);
+	  break;
+	case 2:
+	  digit_control(2, DIGIT_ON);
+	  break;
+	case 3:
+	  digit_control(3, DIGIT_ON);
+	  break;
+	case 4:
+	  digit_control(4, DIGIT_ON);
+	  break;
+	}
+
+	Write_number(numbers[number]);
+	number /= 10;
+
+ //Turn off all segments
+	//passing 10 as an argument to this function, turns off all the segments
+	Write_number(10);
+
+	//Turn off all digits
+	digit_control(1, DIGIT_OFF);
+	digit_control(2, DIGIT_OFF);
+	digit_control(3, DIGIT_OFF);
+	digitalWridigit_controlte(digit4, DIGIT_OFF);
+
+}
+
+void start_upcounting(int delay_value)
+{
+int cnt=0;
+	if ( initialize_all_gpios() < 0)
+	{
+		printf("Error: Led init failed.. program exiting..\n");
+	}else
+	{
+     printf("UP COUNTING.......\n");
+		while(1)
+       {
+
+
+
+       }
+
+	}
+
+}
+
+void start_downcounting(int delay_value)
+{
+
+	if ( initialize_all_gpios() < 0)
+	{
+		printf("Error: Led init failed.. program exiting..\n");
+	}else
+	{
+     printf("DOWN COUNTING.......\n");
+		while(1)
+       {
+			int i = 9;
+
+			for(i=9;i >= 0 ;i--)
+			{
+				Write_number(numbers[i]);
+				sleep(1);
+			}
+
+       }
+
+	}
+
+
+
+}
+
+void start_updowncounting(int delay_value)
+{
+
+	/* DIY : Student has to implement this */
+	printf("/* DIY : Student has to implement this */\n");
+
+
+}
+
+void start_randomcounting(int delay_value)
+{
+
+}
+
+int main(int argc, char *argv[]) {
+	printf("This program controls the USER LED3\n");
+
+	if ( argc != 3 ) /* argc should be 3 for correct execution */
+	{
+
+		printf( "usage: %s <direction> <delay>\n", argv[0] );
+		printf( "valid direction : up, down, updown\n");
+		printf ("recommended delay range : 0 to 1000\n");
+	}
+	else
+	{
+		int value = atoi(argv[2]);
+
+		/*first configure the direction */
+		gpio_configure_dir(GPIO_66_P8_7_SEGA,OUT_DIR);
+		gpio_configure_dir(GPIO_67_P8_8_SEGB,OUT_DIR);
+		gpio_configure_dir(GPIO_69_P8_9_SEGC,OUT_DIR);
+		gpio_configure_dir(GPIO_68_P8_10_DP,OUT_DIR);
+		gpio_configure_dir(GPIO_45_P8_11_SEGD,OUT_DIR);
+		gpio_configure_dir(GPIO_44_P8_12_SEGE,OUT_DIR);
+		gpio_configure_dir(GPIO_26_P8_14_SEGF,OUT_DIR);
+		gpio_configure_dir(GPIO_46_P8_16_SEGG,OUT_DIR);
+
+		/* make all gpios low */
+		gpio_write_value(GPIO_66_P8_7_SEGA,LOW_VALUE);
+		gpio_write_value(GPIO_67_P8_8_SEGB,LOW_VALUE);
+		gpio_write_value(GPIO_69_P8_9_SEGC,LOW_VALUE);
+		gpio_write_value(GPIO_68_P8_10_DP,LOW_VALUE);
+		gpio_write_value(GPIO_45_P8_11_SEGD,LOW_VALUE);
+		gpio_write_value(GPIO_44_P8_12_SEGE,LOW_VALUE);
+		gpio_write_value(GPIO_26_P8_14_SEGF,LOW_VALUE);
+		gpio_write_value(GPIO_46_P8_16_SEGG,LOW_VALUE);
+
+		/* Open all gpios */
+		gpio_file_open(GPIO_66_P8_7_SEGA);
+
+
+    	/* argc is correct , lets check argv */
+    	if (strcmp(argv[1], "up") == 0)
+    	{
+    		start_upcounting(value);
+    	}
+    	else if (strcmp(argv[1], "down") == 0)
+    	{
+    		start_downcounting(value);
+    	}
+    	else if (strcmp(argv[1], "updown") == 0)
+    	{
+    		start_updowncounting(value);
+    	}
+    	else if (strcmp(argv[1], "random") == 0)
+    	{
+    		start_randomcounting(value);
+    	}
+    	else /* default: */
+    	{
+    		printf("Invalid direction values\n");
+    		printf( "valid direction values : up, down,updown,random\n");
+    	}
+	}
+}

@@ -1,0 +1,10 @@
+CVSSSH2PreferencePage.PREF_AUTH_METHODS=gssapi-with-mic,publickey,password,keyboard-interactive
+CVSSSH2PreferencePage.PREF_AUTH_METHODS_ORDER=gssapi-with-mic,publickey,password,keyboard-interactive
+CVSSSH2PreferencePage.PREF_KEX_METHODS=diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256
+CVSSSH2PreferencePage.PREF_KEX_METHODS_ORDER=diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256
+CVSSSH2PreferencePage.PREF_MAC_METHODS=hmac-md5,hmac-sha1,hmac-sha2-256,hmac-sha1-96,hmac-md5-96
+CVSSSH2PreferencePage.PREF_MAC_METHODS_ORDER=hmac-md5,hmac-sha1,hmac-sha2-256,hmac-sha1-96,hmac-md5-96
+CVSSSH2PreferencePage.PREF_SSHAGENT=
+eclipse.preferences.version=1
+org.eclipse.jsch.core.hasChangedDefaultWin32SshHome=true
+org.eclipse.jsch.core.hasMigratedSsh2Preferences=true

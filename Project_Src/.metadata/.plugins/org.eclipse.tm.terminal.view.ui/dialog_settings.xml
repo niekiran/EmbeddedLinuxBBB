@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="">
+		<section name="SettingsPanelControl">
+			<section name="SSH Terminal">
+			</section>
+		</section>
+	</section>
+	<section name="LaunchTerminalSettingsDialog">
+		<section name="SettingsPanelControl">
+			<section name="Local Terminal">
+			</section>
+		</section>
+	</section>
+</section>

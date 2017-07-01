@@ -1,0 +1,10 @@
+06:51:38 **** Build of configuration Debug for project 4digitcount ****
+make all 
+'Building target: 4digitcount'
+'Invoking: Cross GCC Linker'
+arm-linux-gnueabihf-gcc -lm -o "4digitcount"  ./src/4digitcount.o   
+'Finished building target: 4digitcount'
+' '
+
+06:51:45 Build Finished (took 7s.216ms)
+

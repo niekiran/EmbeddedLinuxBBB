@@ -1,0 +1,12 @@
+08:53:21 **** Build of configuration Debug for project lcd_news ****
+make all 
+'Building target: lcd_news'
+'Invoking: Cross GCC Linker'
+arm-linux-gnueabihf-gcc  -o "lcd_news"  ./src/jsmn.o ./src/json_req.o  C:/Users/kiran/workspace_beagleboneblack/lcd_news/src/arm_news/arm_news/libcurl.so 
+c:/users/kiran/documents/bbb_eclipse/gcc-linaro-6.3.1-2017.02-i686-mingw32_arm-linux-gnueabihf/gcc-linaro-6.3.1-2017.02-i686-mingw32_arm-linux-gnueabihf/bin/../lib/gcc/arm-linux-gnueabihf/6.3.1/../../../../arm-linux-gnueabihf/bin/ld.exe:C:/Users/kiran/workspace_beagleboneblack/lcd_news/src/arm_news/arm_news/libcurl.so: file format not recognized; treating as linker script
+c:/users/kiran/documents/bbb_eclipse/gcc-linaro-6.3.1-2017.02-i686-mingw32_arm-linux-gnueabihf/gcc-linaro-6.3.1-2017.02-i686-mingw32_arm-linux-gnueabihf/bin/../lib/gcc/arm-linux-gnueabihf/6.3.1/../../../../arm-linux-gnueabihf/bin/ld.exe:C:/Users/kiran/workspace_beagleboneblack/lcd_news/src/arm_news/arm_news/libcurl.so:1: syntax error
+collect2.exe: error: ld returned 1 exit status
+make: *** [lcd_news] Error 1
+
+08:53:22 Build Finished (took 980ms)
+
