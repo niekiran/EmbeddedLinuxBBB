@@ -23,19 +23,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: TestProject
+all: BBB_led_control
 
 # Tool invocations
-TestProject: $(OBJS) $(USER_OBJS)
+BBB_led_control: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross GCC Linker'
-	arm-linux-gnueabihf-gcc  -o "TestProject" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-linux-gnueabihf-gcc  -o "BBB_led_control" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) TestProject
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) BBB_led_control
 	-@echo ' '
 
 .PHONY: all clean dependents
