@@ -23,19 +23,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: 7segcnt
+all: counter_7seg
 
 # Tool invocations
-7segcnt: $(OBJS) $(USER_OBJS)
+counter_7seg: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross GCC Linker'
-	arm-linux-gnueabihf-gcc  -o "7segcnt" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-linux-gnueabihf-gcc  -o "counter_7seg" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) 7segcnt
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) counter_7seg
 	-@echo ' '
 
 .PHONY: all clean dependents

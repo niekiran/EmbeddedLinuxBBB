@@ -4,13 +4,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/7segcnt.c 
+../src/counter_7seg.c 
 
 OBJS += \
-./src/7segcnt.o 
+./src/counter_7seg.o 
 
 C_DEPS += \
-./src/7segcnt.d 
+./src/counter_7seg.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
