@@ -1,4 +1,4 @@
-14:27:32 **** Clean-only build of configuration Debug for project counter_7seg ****
+15:50:26 **** Clean-only build of configuration Debug for project counter_7seg ****
 make clean 
 rm -rf  ./src/counter_7seg.o  ./src/counter_7seg.d  counter_7seg
 process_begin: CreateProcess(NULL, rm -rf ./src/counter_7seg.o ./src/counter_7seg.d counter_7seg, ...) failed.
@@ -7,5 +7,5 @@ make (e=2): The system cannot find the file specified.
 make: [clean] Error 2 (ignored)
 ' '
 
-14:27:32 Build Finished (took 188ms)
+15:50:27 Build Finished (took 200ms)
 

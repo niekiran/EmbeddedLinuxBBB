@@ -1,15 +1,11 @@
-14:35:54 **** Build of configuration Debug for project lcd_news ****
-make all 
-'Building file: ../src/lcd_news.c'
-'Invoking: Cross GCC Compiler'
-arm-linux-gnueabihf-gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/lcd_news.d" -MT"src/lcd_news.o" -o "src/lcd_news.o" "../src/lcd_news.c"
-'Finished building: ../src/lcd_news.c'
-' '
-'Building target: lcd_news'
-'Invoking: Cross GCC Linker'
-arm-linux-gnueabihf-gcc  -o "lcd_news"  ./src/jsmn.o ./src/lcd_news.o  C:/Users/kiran/workspace_beagleboneblack/lcd_news_1/src/libcurl.so 
-'Finished building target: lcd_news'
+15:50:27 **** Clean-only build of configuration Debug for project lcd_news ****
+make clean 
+rm -rf  ./src/jsmn.o ./src/lcd_news.o  ./src/jsmn.d ./src/lcd_news.d  lcd_news
+process_begin: CreateProcess(NULL, rm -rf ./src/jsmn.o ./src/lcd_news.o ./src/jsmn.d ./src/lcd_news.d lcd_news, ...) failed.
+make (e=2): The system cannot find the file specified.
+
+make: [clean] Error 2 (ignored)
 ' '
 
-14:35:55 Build Finished (took 859ms)
+15:50:27 Build Finished (took 215ms)
 

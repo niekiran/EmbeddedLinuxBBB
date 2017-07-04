@@ -1,4 +1,4 @@
-14:27:32 **** Clean-only build of configuration Debug for project lcd_text ****
+15:50:27 **** Clean-only build of configuration Debug for project lcd_text ****
 make clean 
 rm -rf  ./src/lcd_driver.o ./src/lcd_text.o  ./src/lcd_driver.d ./src/lcd_text.d  lcd_text
 process_begin: CreateProcess(NULL, rm -rf ./src/lcd_driver.o ./src/lcd_text.o ./src/lcd_driver.d ./src/lcd_text.d lcd_text, ...) failed.
@@ -7,5 +7,5 @@ make (e=2): The system cannot find the file specified.
 make: [clean] Error 2 (ignored)
 ' '
 
-14:27:33 Build Finished (took 266ms)
+15:50:27 Build Finished (took 253ms)
 

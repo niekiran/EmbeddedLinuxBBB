@@ -1,20 +1,20 @@
-14:35:54 **** Clean-only build of configuration Debug for project lcd_news ****
-make clean 
-rm -rf  ./src/jsmn.o ./src/lcd_news_1.o  ./src/jsmn.d ./src/lcd_news_1.d  lcd_news_1
-process_begin: CreateProcess(NULL, rm -rf ./src/jsmn.o ./src/lcd_news_1.o ./src/jsmn.d ./src/lcd_news_1.d lcd_news_1, ...) failed.
-make (e=2): The system cannot find the file specified.
-
-make: [clean] Error 2 (ignored)
-' '
-14:35:54 **** Build of configuration Debug for project lcd_news ****
+16:45:13 **** Incremental Build of configuration Debug for project 4digitcount ****
 make all 
-'Building file: ../src/lcd_news.c'
+'Building file: ../src/4digitcount.c'
 'Invoking: Cross GCC Compiler'
-arm-linux-gnueabihf-gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/lcd_news.d" -MT"src/lcd_news.o" -o "src/lcd_news.o" "../src/lcd_news.c"
-'Finished building: ../src/lcd_news.c'
+arm-linux-gnueabihf-gcc -O0 -g3 -Wall -c -fmessage-length=0 -lm -MMD -MP -MF"src/4digitcount.d" -MT"src/4digitcount.o" -o "src/4digitcount.o" "../src/4digitcount.c"
+../src/4digitcount.c: In function 'get_time_in_ms':
+../src/4digitcount.c:392:21: warning: variable 's' set but not used [-Wunused-but-set-variable]
+     time_t          s;  // Seconds
+                     ^
+../src/4digitcount.c: In function 'start_upcounting':
+../src/4digitcount.c:408:14: warning: variable 'old_ms' set but not used [-Wunused-but-set-variable]
+     uint32_t old_ms;
+              ^~~~~~
+'Finished building: ../src/4digitcount.c'
 ' '
-'Building target: lcd_news'
+'Building target: 4digitcount'
 'Invoking: Cross GCC Linker'
-arm-linux-gnueabihf-gcc  -o "lcd_news"  ./src/jsmn.o ./src/lcd_news.o  C:/Users/kiran/workspace_beagleboneblack/lcd_news_1/src/libcurl.so 
-'Finished building target: lcd_news'
+arm-linux-gnueabihf-gcc -lm -o "4digitcount"  ./src/4digitcount.o   
+'Finished building target: 4digitcount'
 ' '

@@ -1,4 +1,4 @@
-14:27:31 **** Clean-only build of configuration Debug for project BBB_led_control ****
+15:50:26 **** Clean-only build of configuration Debug for project BBB_led_control ****
 make clean 
 rm -rf  ./src/BBB_led_control.o  ./src/BBB_led_control.d  BBB_led_control
 process_begin: CreateProcess(NULL, rm -rf ./src/BBB_led_control.o ./src/BBB_led_control.d BBB_led_control, ...) failed.
@@ -7,5 +7,5 @@ make (e=2): The system cannot find the file specified.
 make: [clean] Error 2 (ignored)
 ' '
 
-14:27:31 Build Finished (took 221ms)
+15:50:26 Build Finished (took 200ms)
 

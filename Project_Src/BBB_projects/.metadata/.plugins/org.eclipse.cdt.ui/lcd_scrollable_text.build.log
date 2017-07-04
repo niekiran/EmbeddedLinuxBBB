@@ -1,23 +1,11 @@
-14:28:11 **** Incremental Build of configuration Debug for project lcd_scrollable_text ****
-make all 
-'Building file: ../src/lcd_text_scroll.c'
-'Invoking: Cross GCC Compiler'
-arm-linux-gnueabihf-gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/lcd_text_scroll.d" -MT"src/lcd_text_scroll.o" -o "src/lcd_text_scroll.o" "../src/lcd_text_scroll.c"
-../src/lcd_text_scroll.c: In function 'main':
-../src/lcd_text_scroll.c:317:39: warning: pointer targets in passing argument 1 of 'lcd_print_string' differ in signedness [-Wpointer-sign]
-                      lcd_print_string(pstar);
-                                       ^~~~~
-In file included from ../src/lcd_text_scroll.c:28:0:
-../src/lcd_driver.h:40:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
- void lcd_print_string(uint8_t *message);
-      ^~~~~~~~~~~~~~~~
-'Finished building: ../src/lcd_text_scroll.c'
-' '
-'Building target: lcd_scrollable_text'
-'Invoking: Cross GCC Linker'
-arm-linux-gnueabihf-gcc  -o "lcd_scrollable_text"  ./src/lcd_driver.o ./src/lcd_text_scroll.o   
-'Finished building target: lcd_scrollable_text'
+15:50:27 **** Clean-only build of configuration Debug for project lcd_scrollable_text ****
+make clean 
+rm -rf  ./src/lcd_driver.o ./src/lcd_text_scroll.o  ./src/lcd_driver.d ./src/lcd_text_scroll.d  lcd_scrollable_text
+process_begin: CreateProcess(NULL, rm -rf ./src/lcd_driver.o ./src/lcd_text_scroll.o ./src/lcd_driver.d ./src/lcd_text_scroll.d lcd_scrollable_text, ...) failed.
+make (e=2): The system cannot find the file specified.
+
+make: [clean] Error 2 (ignored)
 ' '
 
-14:28:13 Build Finished (took 1s.114ms)
+15:50:27 Build Finished (took 205ms)
 
