@@ -1,12 +1,11 @@
 /*
- * lcd_text.h
- *
- * 
- *      Author: kiran
+ * lcd_scroll_text.h
+ *  Author: kiran
  */
 
-#ifndef LCD_TEXT_H_
-#define LCD_TEXT_H_
+#ifndef LCD_TEXT_SCROLL_H_
+#define LCD_TEXT_SCROLL_H_
+
 
 #define HIGH_VALUE          1
 #define LOW_VALUE           0
@@ -49,7 +48,6 @@ characters (for example, the letter a). */
 #define GPIO_46_P8_16_BKLTA_15      46       /*  Backlight anode    */
 #define GPIO_48_P9_15_BKLTK_16      48        /*  Backlight cathode */
 
-
 /*******************************************************************
 Function prototypes 
 ********************************************************************/
@@ -61,4 +59,4 @@ int gpio_file_open(uint32_t gpio_num);
 int gpio_file_close(int fd);
 
 
-#endif /* LCD_TEXT_H_ */
+#endif /* LCD_TEXT_SCROLL_H_ */

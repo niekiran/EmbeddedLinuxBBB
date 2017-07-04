@@ -1,7 +1,6 @@
 /*
  * lcd_driver.h
- *
- *  Created on: 08-May-2017
+ 
  *      Author: kiran
  */
 

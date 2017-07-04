@@ -5,15 +5,15 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/lcd_driver.c \
-../src/lcd_text.c 
+../src/lcd_text_scroll.c 
 
 OBJS += \
 ./src/lcd_driver.o \
-./src/lcd_text.o 
+./src/lcd_text_scroll.o 
 
 C_DEPS += \
 ./src/lcd_driver.d \
-./src/lcd_text.d 
+./src/lcd_text_scroll.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

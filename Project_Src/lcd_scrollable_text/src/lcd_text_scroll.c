@@ -1,13 +1,13 @@
 /*
  ============================================================================
- Name        : lcd_text.c
- Author      : Kiran N < niekiran@gmail.com >
- Version     :
+ Name        : lcd_scroll_text.c
+ Author      : Kiran N <niekiran@gmail.com >
+ Version     : 1.0
  Copyright   : Your copyright notice
- Description : This Application prints your message on the 16x2 LCD
- TODOs for the students :
- ============================================================================
- */
+ Description : This application prints pre-stored strings in a scrollable format on the 16x2 LCD
+TODOs for the students 
+1) Take multiple strings as a command line argument and print in scrollable fashion instead of pre-stored. 
+ ============================================================================*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,8 +25,9 @@
 #include <net/if.h>
 #include <arpa/inet.h>
 
-#include "lcd_text.h"
 #include "lcd_driver.h"
+#include "lcd_text_scroll.h"
+
 
 /*=========================================================================================================
 BBB_expansion_heade_P8_pins     GPIO number     16x2 LCD pin      Purpose 
@@ -41,6 +42,19 @@ P8.14                            GPIO_26          10(D7)          Data line 7
 P8.16                            GPIO_46          15(BKLTA)       Backlight anode
 P9.15                            GPIO_48          16(BKLTK)        Backlight cathode
 ============================================================================================================= */
+
+char *some_strings[5]=
+{
+    "Hello",
+    "But we should love our nature",
+    "Lets make this world breathtaking awesome and happy to live in ",
+    "all green lights and happy new year 2017",
+    "bye see you some other time in the evening"
+
+};
+
+char buffer[250];
+
 
 /*
  *  GPIO configure direction
@@ -216,7 +230,7 @@ int print_ip_address()
 void tansition_graphics(void)
 {
 
-	 sleep(1);
+     sleep(1);
 
     lcd_locate(1,1);
     lcd_send_command(LCD_CLEAR_DISPALY);
@@ -241,62 +255,84 @@ void tansition_graphics(void)
 
 }
 
-int main(int argc, char *argv[])
- {
-    char msg_buf[16 * 2];
-    
-    printf("This Application prints your message on the 16x2 LCD\n");
 
-    if ( argc != 2 ) /* argc should be 2 for correct execution */
-    {
+int main(int argc, char *argv[]) 
+{
 
-        printf( "usage: %s <message>\n", argv[0] );
+    printf("Application to print text in scrollable fashion on LCD\n");
+    char *pstar ="**";
 
-    }
-    else
-    {
-        gpio_write_value(GPIO_66_P8_7_RS_4,GPIO_LOW_VALUE);
-       
-       /*The RW pin is always tied to ground in this implementation, meaning that you are only writing to
-        the display and never reading from it.*/
-        gpio_write_value(GPIO_67_P8_8_RW_5,GPIO_LOW_VALUE);
-       
-       /*• The EN pin is used to tell the LCD when data is ready*/
-        gpio_write_value(GPIO_69_P8_9_EN_6,GPIO_LOW_VALUE);
-        
-        /*Data pins 4~7 are used for actually transmitting data, and data pins 0~3 are left unconnected*/
-        gpio_write_value(GPIO_68_P8_10_D4_7,GPIO_LOW_VALUE);
-        gpio_write_value(GPIO_45_P8_11_D5_8,GPIO_LOW_VALUE);
-        gpio_write_value(GPIO_44_P8_12_D6_9,GPIO_LOW_VALUE);
-        gpio_write_value(GPIO_26_P8_14_D7_10,GPIO_LOW_VALUE);
+    gpio_write_value(GPIO_66_P8_7_RS_4,LOW_VALUE);
+   
+   /*The RW pin is always tied to ground in this implementation, meaning that you are only writing to
+    the display and never reading from it.*/
+    gpio_write_value(GPIO_67_P8_8_RW_5,LOW_VALUE);
+   
+   /*• The EN pin is used to tell the LCD when data is ready*/ 
+    gpio_write_value(GPIO_69_P8_9_EN_6,LOW_VALUE);
+   
+   /*Data pins 4~7 are used for actually transmitting data, and data pins 0~3 are left unconnected*/
+    gpio_write_value(GPIO_68_P8_10_D4_7,LOW_VALUE);
+    gpio_write_value(GPIO_45_P8_11_D5_8,LOW_VALUE);
+    gpio_write_value(GPIO_44_P8_12_D6_9,LOW_VALUE);
+    gpio_write_value(GPIO_26_P8_14_D7_10,LOW_VALUE);
 
-        /*
-        You can illuminate the backlight by connecting the anode pin to 5V and the cathode pin to ground
-        if you are using an LCD with a built-in resistor for the backlight. If you are not, you must put a
-        current-limiting resistor in-line with the anode or cathode pin. The datasheet for your device will
-        generally tell you if you need to do this. */
 
-        lcd_init();
-        lcd_send_command(LCD_CLEAR_DISPALY);
-        lcd_send_command(CGRAM_address_start);
-        lcd_send_command(LCD_CLEAR_DISPALY);
-        lcd_locate(1,1);
-        
-        //This is the message given by user 
-        strncpy(msg_buf,argv[1],32);
-        
-        while(1)
-        {
-             lcd_printf("**Welcome to BBB**\n");
-             tansition_graphics();
-             print_ip_address();
-             tansition_graphics();
-             lcd_printf(msg_buf);
-             tansition_graphics();
-        }
-    }
+    /*
+    You can illuminate the backlight by connecting the anode pin to 5V and the cathode pin to ground
+    if you are using an LCD with a built-in resistor for the backlight. If you are not, you must put a
+    current-limiting resistor in-line with the anode or cathode pin. The datasheet for your device will
+    generally tell you if you need to do this. */
 
-    return 0;
+    lcd_init();
+    lcd_send_command(LCD_CLEAR_DISPALY);
+    lcd_send_command(0x80);
+    lcd_send_command(LCD_CLEAR_DISPALY);
+    lcd_locate(1,1);
+    lcd_send_command(0x20);// this is for 4 bit 1 line
+    lcd_printf("**Welcome to BBB**\n");
+    sleep(1);
+   //  tansition_grapphics();
+    lcd_send_command(LCD_CLEAR_DISPALY);
+
+    lcd_send_command(0x20);// this is for 4 bit 1 line
+    lcd_send_command(0x07); //shift left .
+    lcd_locate(1,16);
+    uint8_t char_value=1;
+    uint8_t n=0;
+     while(1)
+      {
+         for(uint8_t i=0;i<2;i++)
+         {
+
+            memcpy(buffer,some_strings[i],strlen(some_strings[i])+1);
+            printf("size :%d\n",strlen(some_strings[i])+1);
+#if 1
+            while(1)
+            {
+
+                 char_value = buffer[n++];
+                 if(! char_value)
+                 {
+                     lcd_print_string(pstar);
+                     break;
+                 }
+                 printf("%d\n",char_value);
+                 lcd_print_char(char_value);
+                 lcd_send_command(0x07);
+                 usleep(300 * 1000);
+            }
+
+
+            n=0;
+            memset(buffer,0,250);
+#endif
+
+         }
+       }
+
+return 0;
+
 }
 
 //https://dawes.wordpress.com/2009/12/23/twitter-to-lcd/
