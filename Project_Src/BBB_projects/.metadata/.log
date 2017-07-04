@@ -1,0 +1,80 @@
+!SESSION 2017-07-04 14:25:15.992 -----------------------------------------------
+eclipse.buildId=4.7.0.I20170308-2000
+java.version=1.8.0_112
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -product org.eclipse.epp.package.cpp.product -product org.eclipse.epp.package.cpp.product -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.cpp.product -product org.eclipse.epp.package.cpp.product -product org.eclipse.epp.package.cpp.product -data E:\fastBit\courses\embedded_linux\EmbeddedLinuxBBB\Project_Src\BBB_projects -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.egit.ui 2 0 2017-07-04 14:25:30.631
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\kiran'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.andmore.ddms 4 0 2017-07-04 14:25:35.275
+!MESSAGE DDMS files not found: D:\downloads\eclipse-cpp-oxygen-M6-win32-x86_64\eclipse\platform-tools\adb.exe D:\downloads\eclipse-cpp-oxygen-M6-win32-x86_64\eclipse\platform-tools\hprof-conv.exe D:\downloads\eclipse-cpp-oxygen-M6-win32-x86_64\eclipse\tools\traceview.bat 
+
+!ENTRY org.eclipse.ui.workbench 4 2 2017-07-04 14:25:36.613
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.workbench".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Executable extension definition for "class" not found.
+	at org.eclipse.core.internal.registry.ConfigurationElement.throwException(ConfigurationElement.java:62)
+	at org.eclipse.core.internal.registry.ConfigurationElement.createExecutableExtension(ConfigurationElement.java:222)
+	at org.eclipse.core.internal.registry.ConfigurationElementHandle.createExecutableExtension(ConfigurationElementHandle.java:55)
+	at org.eclipse.ui.internal.WorkbenchPlugin.lambda$0(WorkbenchPlugin.java:288)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:52)
+	at org.eclipse.ui.internal.WorkbenchPlugin.createExtension(WorkbenchPlugin.java:285)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:53)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.ui.internal.Workbench$40.run(Workbench.java:2747)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+!SUBENTRY 1 org.eclipse.equinox.registry 4 1 2017-07-04 14:25:36.615
+!MESSAGE Executable extension definition for "class" not found.
+!SUBENTRY 1 org.eclipse.equinox.registry 4 1 2017-07-04 14:25:36.615
+!MESSAGE Executable extension definition for "class" not found.
+
+!ENTRY org.eclipse.ui 4 0 2017-07-04 14:25:36.627
+!MESSAGE Unable to execute early startup code for the org.eclipse.ui.IStartup extension contributed by the 'org.eclipse.sequoyah.device.framework.wizard' plug-in.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Executable extension definition for "class" not found.
+	at org.eclipse.core.internal.registry.ConfigurationElement.throwException(ConfigurationElement.java:62)
+	at org.eclipse.core.internal.registry.ConfigurationElement.createExecutableExtension(ConfigurationElement.java:222)
+	at org.eclipse.core.internal.registry.ConfigurationElementHandle.createExecutableExtension(ConfigurationElementHandle.java:55)
+	at org.eclipse.ui.internal.WorkbenchPlugin.lambda$0(WorkbenchPlugin.java:288)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:52)
+	at org.eclipse.ui.internal.WorkbenchPlugin.createExtension(WorkbenchPlugin.java:285)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:53)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.ui.internal.Workbench$40.run(Workbench.java:2747)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+!SUBENTRY 1 org.eclipse.equinox.registry 4 1 2017-07-04 14:25:36.627
+!MESSAGE Executable extension definition for "class" not found.
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:01.549
+!MESSAGE Indexed 'lcd_news_1' (2 sources, 11 headers) in 1.88 sec: 1,456 declarations; 1,562 references; 13 unresolved inclusions; 20 syntax errors; 113 unresolved names (3.6%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:01.612
+!MESSAGE Indexed 'counter_7seg' (1 sources, 0 headers) in 0.063 sec: 44 declarations; 587 references; 7 unresolved inclusions; 0 syntax errors; 17 unresolved names (2.6%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:01.721
+!MESSAGE Indexed 'lcd_text' (2 sources, 2 headers) in 0.093 sec: 102 declarations; 341 references; 22 unresolved inclusions; 0 syntax errors; 52 unresolved names (11%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:06.196
+!MESSAGE Indexed 'button_counter_7seg' (1 sources, 60 headers) in 0.468 sec: 1,929 declarations; 3,467 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:07.819
+!MESSAGE Indexed 'eeprom_read' (1 sources, 37 headers) in 0.452 sec: 1,031 declarations; 1,889 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:07.975
+!MESSAGE Indexed '4digitcount' (1 sources, 1 headers) in 0.109 sec: 56 declarations; 566 references; 10 unresolved inclusions; 0 syntax errors; 24 unresolved names (3.7%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:08.537
+!MESSAGE Indexed 'BBB_led_control' (1 sources, 58 headers) in 0.562 sec: 1,897 declarations; 2,925 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:09.249
+!MESSAGE Indexed 'MPU6050_raw_read' (1 sources, 80 headers) in 0.696 sec: 2,083 declarations; 3,223 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-07-04 14:26:09.904
+!MESSAGE Indexed 'lcd_scrollable_text' (2 sources, 103 headers) in 0.655 sec: 3,608 declarations; 7,393 references; 0 unresolved inclusions; 1 syntax errors; 112 unresolved names (1%)
