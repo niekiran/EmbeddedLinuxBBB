@@ -1,0 +1,21 @@
+cd curl-7.37.1/
+export ROOTDIR="${PWD}"
+$ export CROSS_COMPILE="arm-linux-gnueabihf"
+
+./configure --prefix=${ROOTDIR}/build --target=${CROSS_COMPILE} --host=${CROSS_COMPILE} --build=i586-pc-linux-gnu --with-ssl --with-zlib
+
+
+1) set the mingw bin path in environmental variales 
+2) set the path of the cross toolchain 
+3)cd curl-7.37.1/
+4) export ROOTDIR="${PWD}"
+5) export CROSS_COMPILE="arm-linux-gnueabihf"
+6) ./configure --prefix=${ROOTDIR}/build --target=${CROSS_COMPILE} --host=${CROSS_COMPILE} --build=i586-pc-linux-gnu --with-ssl --with-zlib
+
+or use simpley 
+./configure --prefix=${ROOTDIR}/build --target=${CROSS_COMPILE} --host=${CROSS_COMPILE}
+
+7) make 
+8)make install 
+
+http://www.matteomattei.com/how-to-cross-compile-curl-library-with-ssl-and-zlib-support/
