@@ -23,19 +23,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: lcd_news_1
+all: lcd_news
 
 # Tool invocations
-lcd_news_1: $(OBJS) $(USER_OBJS)
+lcd_news: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross GCC Linker'
-	arm-linux-gnueabihf-gcc  -o "lcd_news_1" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-linux-gnueabihf-gcc  -o "lcd_news" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) lcd_news_1
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) lcd_news
 	-@echo ' '
 
 .PHONY: all clean dependents

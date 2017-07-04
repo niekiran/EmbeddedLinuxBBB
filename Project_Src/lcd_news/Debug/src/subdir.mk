@@ -5,15 +5,15 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/jsmn.c \
-../src/lcd_news_1.c 
+../src/lcd_news.c 
 
 OBJS += \
 ./src/jsmn.o \
-./src/lcd_news_1.o 
+./src/lcd_news.o 
 
 C_DEPS += \
 ./src/jsmn.d \
-./src/lcd_news_1.d 
+./src/lcd_news.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -1,11 +1,3 @@
-14:35:54 **** Clean-only build of configuration Debug for project lcd_news ****
-make clean 
-rm -rf  ./src/jsmn.o ./src/lcd_news_1.o  ./src/jsmn.d ./src/lcd_news_1.d  lcd_news_1
-process_begin: CreateProcess(NULL, rm -rf ./src/jsmn.o ./src/lcd_news_1.o ./src/jsmn.d ./src/lcd_news_1.d lcd_news_1, ...) failed.
-make (e=2): The system cannot find the file specified.
-
-make: [clean] Error 2 (ignored)
-' '
 14:35:54 **** Build of configuration Debug for project lcd_news ****
 make all 
 'Building file: ../src/lcd_news.c'
@@ -18,3 +10,6 @@ arm-linux-gnueabihf-gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/lcd
 arm-linux-gnueabihf-gcc  -o "lcd_news"  ./src/jsmn.o ./src/lcd_news.o  C:/Users/kiran/workspace_beagleboneblack/lcd_news_1/src/libcurl.so 
 'Finished building target: lcd_news'
 ' '
+
+14:35:55 Build Finished (took 859ms)
+
