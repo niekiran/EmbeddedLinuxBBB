@@ -23,19 +23,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: 4digitcount
+all: 4_digit_7seg
 
 # Tool invocations
-4digitcount: $(OBJS) $(USER_OBJS)
+4_digit_7seg: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross GCC Linker'
-	arm-linux-gnueabihf-gcc -lm -o "4digitcount" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-linux-gnueabihf-gcc -lm -o "4_digit_7seg" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) 4digitcount
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) 4_digit_7seg
 	-@echo ' '
 
 .PHONY: all clean dependents

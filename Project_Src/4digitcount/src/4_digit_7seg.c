@@ -94,6 +94,29 @@ P9.27                                   GPIO_115                     6
 
 #define SOME_BYTES          100
 
+
+/*
+ *  GPIO export pin
+ *
+ */
+int gpio_export(uint32_t gpio_num)
+{
+	int fd, len;
+	char buf[SOME_BYTES];
+
+	fd = open(SYS_GPIO_PATH "/export", O_WRONLY);
+	if (fd < 0) {
+		perror(" error opening export file\n");
+		return fd;
+	}
+
+	len = snprintf(buf, sizeof(buf), "%d", gpio_num);
+	write(fd, buf, len);
+	close(fd);
+
+	return 0;
+}
+
 /*
  *  GPIO configure direction
  *  dir_value : 1 means 'out' , 0 means "in"
@@ -324,6 +347,7 @@ void Write_number_to_7segdisplay(uint8_t numberToDisplay)
     break;
 
     case 10:
+    	/* This will turn off all segments */
         gpio_write_value(GPIO_66_P8_7_SEGA, SEGMENT_OFF);
         gpio_write_value(GPIO_67_P8_8_SEGB, SEGMENT_OFF);
         gpio_write_value(GPIO_69_P8_9_SEGC, SEGMENT_OFF);
@@ -338,108 +362,98 @@ void Write_number_to_7segdisplay(uint8_t numberToDisplay)
 
 }
 
+/*
+ * This function implements the logic to write numbers on the 4 digit LED display
+ * we turn on and display a number on each digit for a very small amount of time that is 10 micro seconds,then we move to
+ * next digit.
+ * if u do this very fast enough , then it gives the illusion that , we are writing to all digits simultaneously
+ */
 void dispaly_numbers(uint32_t number)
 {
-
+	/* we have 4 digits , so loop of 4 */
     for(int digit = 4 ; digit > 0 ; digit--) 
     {
-
-        //Turn on a digit for a short amount of time
+    	/*
+    	 * start with the 4th digit(right most )
+    	 * Turn on each digit for a small amount of time and display the number
+    	 * */
         switch(digit) 
         {
             case 1:
-                gpio_write_value(GPIO_48_P9_15_DIGIT1,HIGH_VALUE);
+                gpio_write_value(GPIO_48_P9_15_DIGIT1,GPIO_HIGH_VALUE);
               break;
 
             case 2:
-                gpio_write_value(GPIO_49_P9_23_DIGIT2,HIGH_VALUE);
+                gpio_write_value(GPIO_49_P9_23_DIGIT2,GPIO_HIGH_VALUE);
               break;
             case 3:
-                gpio_write_value(GPIO_117_P9_30_DIGIT3,HIGH_VALUE);
+                gpio_write_value(GPIO_117_P9_30_DIGIT3,GPIO_HIGH_VALUE);
               break;
             case 4:
-                gpio_write_value(GPIO_115_P9_27_DIGIT4,HIGH_VALUE);
+                gpio_write_value(GPIO_115_P9_27_DIGIT4,GPIO_HIGH_VALUE);
               break;
         }
 
-
-        Write_number_to_7segdisplay(5);
+        Write_number_to_7segdisplay(number % 10);
         number /= 10;
 
-        usleep(500);
+       /* display each digit only for 10 micro seconds */
+       usleep(10);
 
-#if 0
-     //Turn off all segments
-        //passing 10 as an argument to this function, turns off all the segments
-        Write_number_to_7segdisplay(5);
+       /* Turn of all segments */
+       Write_number_to_7segdisplay(10);
 
         //Turn off all digits
-        gpio_write_value(GPIO_48_P_15_DIGIT1, LOW_VALUE);
-        gpio_write_value(GPIO_49_P_23_DIGIT2, LOW_VALUE);
-        gpio_write_value(GPIO_117_P_30_DIGIT3, LOW_VALUE);
-        gpio_write_value(GPIO_115_P_27_DIGIT4, LOW_VALUE);
-#endif
+        gpio_write_value(GPIO_48_P9_15_DIGIT1, GPIO_LOW_VALUE);
+        gpio_write_value(GPIO_49_P9_23_DIGIT2, GPIO_LOW_VALUE);
+        gpio_write_value(GPIO_117_P9_30_DIGIT3, GPIO_LOW_VALUE);
+        gpio_write_value(GPIO_115_P9_27_DIGIT4, GPIO_LOW_VALUE);
+
 
     }
-}
-
-
-uint32_t get_time_in_ms(void)
-{
-
-#if 1
-    uint32_t ms; // Milliseconds
-    time_t          s;  // Seconds
-    struct timespec spec;
-
-    clock_gettime(CLOCK_REALTIME, &spec);
-    s  = spec.tv_sec;
-    ms = round(spec.tv_nsec / 1.0e6); // Convert nanoseconds to milliseconds
-
-    return ms;
-
-#endif
-}
-
-
-void start_upcounting(int delay_value)
-{
-    int counter=0;
-    uint32_t old_ms;
-    printf("UP COUNTING.......\n");
-    
-    old_ms = get_time_in_ms();
-
-        while(1)
-       {
-#if 1
-           if(get_time_in_ms() < (0 + 500 ) )
-           {
-                dispaly_numbers(counter);
-                printf("ms %d\n", get_time_in_ms());
-           }
-           else
-           {
-               counter++;
-               printf("number display %d\n", counter);
-               old_ms = get_time_in_ms();
-
-           }
-#endif
-           dispaly_numbers(counter % 100);
-           counter++;
-       }
 
 }
 
+/*
+ * this function down counts
+ * 'delay_value' controls the speed of down counting (given by user through command line )
+ */
 void start_downcounting(int delay_value)
 {
-     printf("DOWN COUNTING.......\n");
-        while(1)
-       {
+	uint32_t i=0,number=9999;
+	printf("DOWN COUNTING.......\n");
+
+	while(1)
+	{
+		/*we dont increment the number to display until 'delay_value' */
+		for ( i =0 ; i < delay_value ; i++)
+		{
+			dispaly_numbers(number);
+		}
+		number--;
+	}
 
 
-       }
+}
+
+/*
+ * this function up counts
+ * 'delay_value' controls the speed of up counting (given by user through command line )
+ */
+void start_upcounting(int delay_value)
+{
+	uint32_t i=0,number=0;
+	printf("UP COUNTING.......\n");
+
+	while(1)
+	{
+		/*we dont increment the number to display until 'delay_value' */
+		for ( i =0 ; i < delay_value ; i++)
+		{
+			dispaly_numbers(number);
+		}
+		number++;
+	}
 
 }
 
@@ -469,7 +483,23 @@ int main(int argc, char *argv[])
     {
         int value = atoi(argv[2]);
 
+        /*first lets export all required gpios */
+        gpio_export(GPIO_66_P8_7_SEGA);
+        gpio_export(GPIO_67_P8_8_SEGB);
+        gpio_export(GPIO_69_P8_9_SEGC);
+        gpio_export(GPIO_68_P8_10_DP);
+        gpio_export(GPIO_45_P8_11_SEGD);
+        gpio_export(GPIO_44_P8_12_SEGE);
+        gpio_export(GPIO_26_P8_14_SEGF);
+        gpio_export(GPIO_46_P8_16_SEGG);
+
+        gpio_export(GPIO_48_P9_15_DIGIT1);
+        gpio_export(GPIO_49_P9_23_DIGIT2);
+        gpio_export(GPIO_117_P9_30_DIGIT3);
+        gpio_export(GPIO_115_P9_27_DIGIT4);
+
         /*first configure the direction for segments */
+
         gpio_configure_dir(GPIO_66_P8_7_SEGA,GPIO_DIR_OUT);
         gpio_configure_dir(GPIO_67_P8_8_SEGB,GPIO_DIR_OUT);
         gpio_configure_dir(GPIO_69_P8_9_SEGC,GPIO_DIR_OUT);

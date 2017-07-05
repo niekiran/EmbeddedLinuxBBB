@@ -4,13 +4,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../main.c 
+../mpu6050_rawread.c 
 
 OBJS += \
-./main.o 
+./mpu6050_rawread.o 
 
 C_DEPS += \
-./main.d 
+./mpu6050_rawread.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
