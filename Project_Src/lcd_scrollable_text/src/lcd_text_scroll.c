@@ -185,15 +185,24 @@ int gpio_file_close(int fd)
  */
 int initialize_all_gpios(void)
 {
+	/* first lets export all the GPIOs */
+	gpio_export(GPIO_66_P8_7_RS_4);
+	gpio_export(GPIO_67_P8_8_RW_5);
+	gpio_export(GPIO_69_P8_9_EN_6);
+	gpio_export(GPIO_68_P8_10_D4_11);
+	gpio_export(GPIO_45_P8_11_D5_12);
+	gpio_export(GPIO_44_P8_12_D6_13);
+	gpio_export(GPIO_26_P8_14_D7_14);
+
     
    /*first configure the direction for LCD pins */
     gpio_configure_dir(GPIO_66_P8_7_RS_4,GPIO_DIR_OUT);
     gpio_configure_dir(GPIO_67_P8_8_RW_5,GPIO_DIR_OUT);
     gpio_configure_dir(GPIO_69_P8_9_EN_6,GPIO_DIR_OUT);
-    gpio_configure_dir(GPIO_68_P8_10_D4_7,GPIO_DIR_OUT);
-    gpio_configure_dir(GPIO_45_P8_11_D5_8,GPIO_DIR_OUT);
-    gpio_configure_dir(GPIO_44_P8_12_D6_9,GPIO_DIR_OUT);
-    gpio_configure_dir(GPIO_26_P8_14_D7_10,GPIO_DIR_OUT);
+    gpio_configure_dir(GPIO_68_P8_10_D4_11,GPIO_DIR_OUT);
+    gpio_configure_dir(GPIO_45_P8_11_D5_12,GPIO_DIR_OUT);
+    gpio_configure_dir(GPIO_44_P8_12_D6_13,GPIO_DIR_OUT);
+    gpio_configure_dir(GPIO_26_P8_14_D7_14,GPIO_DIR_OUT);
 
     return 0;
 
@@ -262,6 +271,8 @@ int main(int argc, char *argv[])
     printf("Application to print text in scrollable fashion on LCD\n");
     char *pstar ="**";
 
+    initialize_all_gpios();
+
     gpio_write_value(GPIO_66_P8_7_RS_4,LOW_VALUE);
    
    /*The RW pin is always tied to ground in this implementation, meaning that you are only writing to
@@ -272,10 +283,10 @@ int main(int argc, char *argv[])
     gpio_write_value(GPIO_69_P8_9_EN_6,LOW_VALUE);
    
    /*Data pins 4~7 are used for actually transmitting data, and data pins 0~3 are left unconnected*/
-    gpio_write_value(GPIO_68_P8_10_D4_7,LOW_VALUE);
-    gpio_write_value(GPIO_45_P8_11_D5_8,LOW_VALUE);
-    gpio_write_value(GPIO_44_P8_12_D6_9,LOW_VALUE);
-    gpio_write_value(GPIO_26_P8_14_D7_10,LOW_VALUE);
+    gpio_write_value(GPIO_68_P8_10_D4_11,LOW_VALUE);
+    gpio_write_value(GPIO_45_P8_11_D5_12,LOW_VALUE);
+    gpio_write_value(GPIO_44_P8_12_D6_13,LOW_VALUE);
+    gpio_write_value(GPIO_26_P8_14_D7_14,LOW_VALUE);
 
 
     /*

@@ -40,10 +40,10 @@ characters (for example, the letter a). */
 #define GPIO_66_P8_7_RS_4       66       /*  Register selection (Character vs. Command) */
 #define GPIO_67_P8_8_RW_5       67       /*  Read/write     */
 #define GPIO_69_P8_9_EN_6       69       /*  Enable */
-#define GPIO_68_P8_10_D4_7      68       /*  Data line 4    */
-#define GPIO_45_P8_11_D5_8      45       /*  Data line 5    */
-#define GPIO_44_P8_12_D6_9      44       /*  Data line 6    */
-#define GPIO_26_P8_14_D7_10     26       /*  Data line 7    */
+#define GPIO_68_P8_10_D4_11      68       /*  Data line 4    */
+#define GPIO_45_P8_11_D5_12      45       /*  Data line 5    */
+#define GPIO_44_P8_12_D6_13      44       /*  Data line 6    */
+#define GPIO_26_P8_14_D7_14     26       /*  Data line 7    */
 
 
 #define GPIO_46_P8_16_BKLTA_15      46       /*  Backlight anode    */

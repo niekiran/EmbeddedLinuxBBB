@@ -42,6 +42,29 @@ P8.16                            GPIO_46          15(BKLTA)       Backlight anod
 P9.15                            GPIO_48          16(BKLTK)        Backlight cathode
 ============================================================================================================= */
 
+
+/*
+ *  GPIO export pin
+ *
+ */
+int gpio_export(uint32_t gpio_num)
+{
+	int fd, len;
+	char buf[SOME_BYTES];
+
+	fd = open(SYS_GPIO_PATH "/export", O_WRONLY);
+	if (fd < 0) {
+		perror(" error opening export file\n");
+		return fd;
+	}
+
+	len = snprintf(buf, sizeof(buf), "%d", gpio_num);
+	write(fd, buf, len);
+	close(fd);
+
+	return 0;
+}
+
 /*
  *  GPIO configure direction
  *  dir_value : 1 means 'out' , 0 means "in"
@@ -171,15 +194,24 @@ int gpio_file_close(int fd)
  */
 int initialize_all_gpios(void)
 {
+	/* first lets export all the GPIOs */
+	gpio_export(GPIO_66_P8_7_RS_4);
+	gpio_export(GPIO_67_P8_8_RW_5);
+	gpio_export(GPIO_69_P8_9_EN_6);
+	gpio_export(GPIO_68_P8_10_D4_11);
+	gpio_export(GPIO_45_P8_11_D5_12);
+	gpio_export(GPIO_44_P8_12_D6_13);
+	gpio_export(GPIO_26_P8_14_D7_14);
+
     
    /*first configure the direction for LCD pins */
     gpio_configure_dir(GPIO_66_P8_7_RS_4,GPIO_DIR_OUT);
     gpio_configure_dir(GPIO_67_P8_8_RW_5,GPIO_DIR_OUT);
     gpio_configure_dir(GPIO_69_P8_9_EN_6,GPIO_DIR_OUT);
-    gpio_configure_dir(GPIO_68_P8_10_D4_7,GPIO_DIR_OUT);
-    gpio_configure_dir(GPIO_45_P8_11_D5_8,GPIO_DIR_OUT);
-    gpio_configure_dir(GPIO_44_P8_12_D6_9,GPIO_DIR_OUT);
-    gpio_configure_dir(GPIO_26_P8_14_D7_10,GPIO_DIR_OUT);
+    gpio_configure_dir(GPIO_68_P8_10_D4_11,GPIO_DIR_OUT);
+    gpio_configure_dir(GPIO_45_P8_11_D5_12,GPIO_DIR_OUT);
+    gpio_configure_dir(GPIO_44_P8_12_D6_13,GPIO_DIR_OUT);
+    gpio_configure_dir(GPIO_26_P8_14_D7_14,GPIO_DIR_OUT);
 
     return 0;
 
@@ -255,6 +287,8 @@ int main(int argc, char *argv[])
     }
     else
     {
+    	initialize_all_gpios();
+
         gpio_write_value(GPIO_66_P8_7_RS_4,GPIO_LOW_VALUE);
        
        /*The RW pin is always tied to ground in this implementation, meaning that you are only writing to
@@ -265,10 +299,10 @@ int main(int argc, char *argv[])
         gpio_write_value(GPIO_69_P8_9_EN_6,GPIO_LOW_VALUE);
         
         /*Data pins 4~7 are used for actually transmitting data, and data pins 0~3 are left unconnected*/
-        gpio_write_value(GPIO_68_P8_10_D4_7,GPIO_LOW_VALUE);
-        gpio_write_value(GPIO_45_P8_11_D5_8,GPIO_LOW_VALUE);
-        gpio_write_value(GPIO_44_P8_12_D6_9,GPIO_LOW_VALUE);
-        gpio_write_value(GPIO_26_P8_14_D7_10,GPIO_LOW_VALUE);
+        gpio_write_value(GPIO_68_P8_10_D4_11,GPIO_LOW_VALUE);
+        gpio_write_value(GPIO_45_P8_11_D5_12,GPIO_LOW_VALUE);
+        gpio_write_value(GPIO_44_P8_12_D6_13,GPIO_LOW_VALUE);
+        gpio_write_value(GPIO_26_P8_14_D7_14,GPIO_LOW_VALUE);
 
         /*
         You can illuminate the backlight by connecting the anode pin to 5V and the cathode pin to ground
