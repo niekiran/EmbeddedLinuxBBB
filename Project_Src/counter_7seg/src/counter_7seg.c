@@ -63,8 +63,8 @@ P8.16                                  GPIO_46                     g
 #define GPIO_LOW_VALUE      LOW_VALUE
 #define GPIO_HIGH_VALUE     HIGH_VALUE
 
-#define SEGMENT_ON          LOW_VALUE
-#define SEGMENT_OFF         HIGH_VALUE
+#define SEGMENT_ON          HIGH_VALUE
+#define SEGMENT_OFF         LOW_VALUE
 
 
 /* This is the path corresponds to GPIOs in the 'sys' directory */
@@ -150,7 +150,7 @@ int gpio_read_value(uint32_t gpio_num)
 
 /*
  *  GPIO configure the edge of trigger
- *  edge : rising, falling
+ *  edge : rising, falling , none
  */
 int gpio_configure_edge(uint32_t gpio_num, char *edge)
 {
@@ -201,6 +201,10 @@ int gpio_file_close(int fd)
  */
 int initialize_all_gpios(void)
 {
+	/*  we are driving the leds , so,
+	 * 1. first make the gpio which drives the led to output mode , that means set the direction as "out"
+	 * 2. then write the value "0" to turn off all the leds or segments.
+	 */
     
     gpio_configure_dir(GPIO_66,GPIO_DIR_OUT);
     gpio_write_value(GPIO_66, GPIO_LOW_VALUE );
@@ -391,9 +395,9 @@ void start_downcounting(int delay_value_ms)
     {
         printf("DOWN COUNTING.......\n");
         while(1)
-       {
+       {// i =9;
             for(i=9;i >= 0 ;i--)
-            {
+            { // printf("%d\n",i);
                 Write_number_to_7segdisplay(i);
                 /*suspend execution for microsecond intervals*/
                 usleep(delay_value_ms * 1000); //converting ms to micro
@@ -421,28 +425,29 @@ int main(int argc, char *argv[]) {
 
         printf( "usage: %s <direction> <delay>\n", argv[0] );
         printf( "valid direction : up, down, updown, random\n");
-        printf ("recommended delay range : 0 to 1000\n");
+        printf ("recommended delay range in ms : 0 to 1000\n");
     }
     else
     {
-        int value = atoi(argv[2]);
+    	/* convert the 'delay' value , which argv[2]  in to integer */
+        int delay_value = atoi(argv[2]);
         
         /* argc is correct , lets check argv */
-        if (strcmp(argv[1], "up") == 0)
+        if (! strcmp(argv[1], "up") )
         {
-            start_upcounting(value);
+            start_upcounting(delay_value);
         }
         else if (strcmp(argv[1], "down") == 0)
         {
-            start_downcounting(value);
+            start_downcounting(delay_value);
         }
         else if (strcmp(argv[1], "updown") == 0)
         {
-            start_updowncounting(value);
+            start_updowncounting(delay_value);
         }
         else if (strcmp(argv[1], "random") == 0)
         {
-            start_randomcounting(value);
+            start_randomcounting(delay_value);
         }
         else /* default: */
         {

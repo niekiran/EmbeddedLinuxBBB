@@ -5,7 +5,7 @@
  Version     : 1.0
  Copyright   : Your copyright notice
  Description : Controls the BBB user led 3 trigger and brightness values
- TODOs for Students : Maket it generic for all the leds of the BBB
+ TODOs for Students : Make it generic for all the on board leds of the BBB
  ============================================================================
  */
 #include <stdio.h>
@@ -33,13 +33,13 @@ int write_trigger_values(uint8_t led_no, char *value)
 	int fd,ret=0;
 	char buf[SOME_BYTES];
 	
-	/* we are concating  2 strings and storing that in to 'buf'  */
+	/* we are concatenating  2 strings and storing that in to 'buf'  */
 	snprintf(buf,sizeof(buf),SYS_FS_LEDS_PATH "/beaglebone:green:usr%d/trigger",led_no);
 	
 	/* open the file in write mode */
 	/*Returns the file descriptor for the new file. The file descriptor returned is always the smallest integer greater than zero that is still available. If a negative value is returned, then there was an error opening the file.*/
 	fd = open(buf, O_WRONLY );
-	if (fd < 0) {
+	if (fd <= 0) {
 		perror(" write trigger error\n");
 		return -1;
 	}
@@ -48,7 +48,7 @@ int write_trigger_values(uint8_t led_no, char *value)
 	/*Returns the number of bytes that were written. 
 	  If value is negative, then the system call returned an error.
 	*/
-	ret = write(fd, value, sizeof(value) );
+	ret = write(fd, (void*)value, strlen(value) );
 	if ( ret <= 0)
 	{
 		printf("trigger value write error\n");
@@ -67,7 +67,7 @@ int write_brightness_values(uint8_t led_no, int value)
 	int fd,ret=0;
 	char buf[SOME_BYTES];
 	
-	/* we are concating  2 strings and storing that in to 'buf'  */
+	/* we are concatenating  2 strings and storing that in to 'buf'  */
 	snprintf(buf,sizeof(buf),SYS_FS_LEDS_PATH "/beaglebone:green:usr%d/brightness",led_no);
 	
 	/* open the file in write mode */
@@ -82,7 +82,7 @@ int write_brightness_values(uint8_t led_no, int value)
 	/*Returns the number of bytes that were written. 
 	  If value is negative, then the system call returned an error.
 	*/
-	ret = write(fd, &value, sizeof(value) );
+	ret = write(fd, (void *)&value, sizeof(value) );
 	if ( ret <= 0)
 	{
 		printf("trigger value write error\n");
@@ -96,9 +96,9 @@ int write_brightness_values(uint8_t led_no, int value)
 /* Compare and process the trigger values given by the user */
 void process_trigger_values( char *value)
 {	
-	if( strcmp(value, "timer") || strcmp(value, "heartbeat") || \
-		strcmp(value, "none") || strcmp(value, "oneshot") || \
-		strcmp(value, "default-on") )
+	if( ! (strcmp(value, "timer") && strcmp(value, "heartbeat") && \
+			strcmp(value, "none") && strcmp(value, "oneshot") && \
+			strcmp(value, "default-on") ) )
 	{
 			write_trigger_values(USR_LED_NUMBER,value);
 	}
