@@ -386,7 +386,7 @@ void start_upcounting(int delay_value_ms)
 /* implements the down counting from 9 to 0 */
 void start_downcounting(int delay_value_ms)
 {
-    uint8_t i=9;
+    int i=9;
     if ( initialize_all_gpios() < 0)
     {
         printf("Error: GPIO init failed !\n");
@@ -395,9 +395,9 @@ void start_downcounting(int delay_value_ms)
     {
         printf("DOWN COUNTING.......\n");
         while(1)
-       {// i =9;
+       {
             for(i=9;i >= 0 ;i--)
-            { // printf("%d\n",i);
+            {
                 Write_number_to_7segdisplay(i);
                 /*suspend execution for microsecond intervals*/
                 usleep(delay_value_ms * 1000); //converting ms to micro

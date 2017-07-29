@@ -22,26 +22,26 @@
 #include <math.h>
 
 /*==========================================================================================
-BBB_expansion_header_P8_pins           GPIO number            4-digit 7seg Dispaly pin number
+BBB_expansion_header_P8_pins           GPIO number            4-digit 7seg Display pin number
 =============================================================================================
-P8.7                                   GPIO_66                     11
-P8.8                                   GPIO_67                     7
-P8.9                                   GPIO_69                     4
-P8.10                                  GPIO_68                     3
-P8.11                                  GPIO_45                     2
-P8.12                                  GPIO_44                     1
-P8.14                                  GPIO_26                     10
-P8.16                                  GPIO_46                     5
+P8.7                                   GPIO_66                     11   (SEG A)
+P8.8                                   GPIO_67                     7    (SEG B)
+P8.9                                   GPIO_69                     4	(SEG C)
+P8.10                                  GPIO_68                     3	(DP)
+P8.11                                  GPIO_45                     2	(SEG D)
+P8.12                                  GPIO_44                     1	(SEG E)
+P8.14                                  GPIO_26                     10	(SEG F)
+P8.16                                  GPIO_46                     5	(SEG G)
 ============================================================================================ */
 
 
 /*==========================================================================================
 BBB_expansion_header_P9_pins           GPIO number            4-digit 7seg Dispaly pin number
 =============================================================================================
-P9.15                                   GPIO_48                     12
-P9.23                                   GPIO_49                      9
-P9.30                                   GPIO_112                     8
-P9.27                                   GPIO_115                     6
+P9.15                                   GPIO_48                     12   (DIGIT 1 )
+P9.23                                   GPIO_49                      9	 (DIGIT 2 )
+P9.30                                   GPIO_112                     8	 (DIGIT 3 )
+P9.27                                   GPIO_115                     6	 (DIGIT 4 )
 ============================================================================================= */
 
 
@@ -411,6 +411,8 @@ void dispaly_numbers(uint32_t number)
 
 
     }
+
+
 
 }
 
