@@ -5,7 +5,7 @@
  Version     : 1.0
  Copyright   : Your copyright notice
  Description : This application implements a 4 digit up/down/random counter on 4 dgit 7seg LED display
- TODOs for the studnets 
+ TODOs for the students
  1)Convert this application to implement Digital clock. 
  ============================================================================
  */
@@ -44,6 +44,8 @@ P9.30                                   GPIO_112                     8	 (DIGIT 3
 P9.27                                   GPIO_115                     6	 (DIGIT 4 )
 ============================================================================================= */
 
+/* un comment this macro only if you use COMMAN CATHODE display */
+//#define COMMON_CATHODE
 
 #define GPIO_66     66
 #define GPIO_67     67
@@ -85,8 +87,13 @@ P9.27                                   GPIO_115                     6	 (DIGIT 4
 #define GPIO_LOW_VALUE      LOW_VALUE
 #define GPIO_HIGH_VALUE     HIGH_VALUE
 
-#define SEGMENT_ON          LOW_VALUE
-#define SEGMENT_OFF         HIGH_VALUE
+#ifdef COMMON_CATHODE
+	#define SEGMENT_ON          HIGH_VALUE
+	#define SEGMENT_OFF         LOW_VALUE
+#else
+	#define SEGMENT_ON          LOW_VALUE
+	#define SEGMENT_OFF         HIGH_VALUE
+#endif
 
 
 /* This is the path corresponds to GPIOs in the 'sys' directory */
@@ -479,7 +486,7 @@ int main(int argc, char *argv[])
 
         printf( "usage: %s <direction> <delay>\n", argv[0] );
         printf( "valid direction : up, down, updown,random\n");
-        printf ("recommended delay range : 0 ms to 1000 ms\n");
+        printf ("recommended delay range : 0  to 1000 \n");
     }
     else
     {
