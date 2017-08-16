@@ -1,4 +1,6 @@
 
+*************************cross tool-chain installation and settings for linux host******************
+
 STEP 1 : Download arm cross toolchain for your Host machine
 
 STEP 2 :  export  path of the cross compilation toolchain. 
@@ -29,9 +31,6 @@ make CROSS_COMPILE=arm-linux-gnueabihf- -j4  // -j4(4 core machine) will instruc
 make CROSS_COMPILE=arm-linux-gnueabihf- -j8  // -j8(8 core machine) will instructs the make tool to spawn 8 threads
 
 
-*************************   end ***************************************************
-
-
 ************************* linux compilation ***************************************************
 STEP 1:
  make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- distclean
@@ -51,8 +50,6 @@ STEP 5:
 
 STEP 6:
  make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=<path of the RFS> modules_install
-
-*************************   end ***************************************************
 
 
 ************************* Busy box compilation ***************************************************
@@ -104,39 +101,9 @@ dropbearkey -t rsa -f dropbear_rsa_host_key
 7) make a SSh connection from pc 
 ssh -l root 192.168.7.2
 
-ssh-keygen -f "/root/.ssh/known_hosts" -R 192.168.7.2
-
-
-
-dropbear -B -r dropbear_dss_host_key 
-dropbear -B -r dropbear_rsa_host_key -r dropbear_dss_host_key
-  -r /mnt/dropbear/etc/dropbear_rsa_host_key 
 
 
 
 
-# interfaces(5) file used by ifup(8) and ifdown(8)
-
-auto lo
-iface lo inet loopback
-
-auto eth0
-iface eth0 inet static
-    address 192.168.7.2
-    netmask 255.255.255.0
-    network 192.168.7.0
-    gateway 192.168.7.1
-
-
-
-auto usb0
-iface usb0 inet static
-    address 192.168.6.2
-    netmask 255.255.255.0
-    network 192.168.6.0
-    gateway 192.168.6.1
-
-
-
-
+# use this command to install a openssh server on your ubuntu host 
 sudo apt-get install openssh-server
