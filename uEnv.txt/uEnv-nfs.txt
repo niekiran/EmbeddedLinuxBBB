@@ -1,7 +1,7 @@
 console=ttyO0,115200n8
 ipaddr=192.168.7.2
 serverip=192.168.7.1
-absolutepath=/var/lib/tftp/
+absolutepath=/var/lib/tftpboot/
 rootpath=/srv/nfs/bbb,nolock,wsize=1024,rsize=1024 rootwait rootdelay=5
 loadtftp=echo Booting from network ...;tftpboot ${loadaddr} ${absolutepath}uImage; tftpboot ${fdtaddr} ${absolutepath}am335x-boneblack.dtb
 netargs=setenv bootargs console=${console} root=/dev/nfs rw nfsroot=${serverip}:${rootpath} 
