@@ -45,12 +45,11 @@ P9.15                            GPIO_48          16(BKLTK)        Backlight cat
 
 char *some_strings[5]=
 {
-    "Hello",
-    "But we should love our nature",
-    "Lets make this world breathtaking awesome and happy to live in ",
-    "all green lights and happy new year 2017",
-    "bye see you some other time in the evening"
-
+    "Mahatma Gandhi said,",
+    "First they ignore you",
+    "then they laugh at you ",
+    "then they fight you",
+    "then you win"
 };
 
 char buffer[250];
