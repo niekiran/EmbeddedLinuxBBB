@@ -13,7 +13,7 @@ BBB_expansion_header_P9_pins     MPU6050 pins
 ===================================================
 P9_19                              SCL
 P9_20                              SDA
-P9_3                               VCC
+P9_3                               VCC 3.3v
 P9_1                               GND
 ==================================================== */
 
@@ -85,7 +85,7 @@ P9_1                               GND
 int fd;
 
 /*write a 8bit "data" to the sensor at the address indicated by "addr" */
-int mpu6050_write(uint8_t addr, uint16_t data)
+int mpu6050_write(uint8_t addr, uint8_t data)
 {
   int ret;
   char buf[2];
@@ -101,11 +101,11 @@ int mpu6050_write(uint8_t addr, uint16_t data)
 }
 
 /*read "len" many bytes from "addr" of the sensor in to the adresss indicated by "pBuffer" */
-int mpu6050_read(uint8_t addr, char *pBuffer,uint32_t len)
+int mpu6050_read(uint8_t base_addr, char *pBuffer,uint32_t len)
 {
   int ret;
   char buf[2];
-  buf[0]=addr;
+  buf[0]=base_addr;
   ret = write(fd,buf,1);
   if (ret <= 0)
   {
@@ -132,9 +132,9 @@ void mpu6050_init()
     usleep(500);
 
     // Adjust full scale values for gyro and acc
-    mpu6050_write(MPU6050_REG_ACCEL_CONFIG, 0x18);
+    mpu6050_write(MPU6050_REG_ACCEL_CONFIG, 0x00);
     usleep(500);
-    mpu6050_write(MPU6050_REG_GYRO_CONFIG, 0x18);
+    mpu6050_write(MPU6050_REG_GYRO_CONFIG, 0x00);
     usleep(500);
 }
 
@@ -196,27 +196,31 @@ int main(void)
         mpu6050_read_gyro(gyro_value);
 
         /*Convert acc raw values in to 'g' values*/
-        accx = acc_value[0]/ACC_FS_SENSITIVITY_3;
-        accy = acc_value[1]/ACC_FS_SENSITIVITY_3;
-        accz = acc_value[2]/ACC_FS_SENSITIVITY_3;
+        accx = (double) acc_value[0]/ACC_FS_SENSITIVITY_0;
+        accy = (double) acc_value[1]/ACC_FS_SENSITIVITY_0;
+        accz = (double) acc_value[2]/ACC_FS_SENSITIVITY_0;
 
         /* Convert gyro raw values in to  "°/s" (deg/seconds) */
-        gyrox = gyro_value[0]/GYR_FS_SENSITIVITY_3;
-        gyroy = gyro_value[1]/GYR_FS_SENSITIVITY_3;
-        gyroz = gyro_value[2]/GYR_FS_SENSITIVITY_3;
-        
+        gyrox = (double) gyro_value[0]/GYR_FS_SENSITIVITY_0;
+        gyroy = (double) gyro_value[1]/GYR_FS_SENSITIVITY_0;
+        gyroz = (double) gyro_value[2]/GYR_FS_SENSITIVITY_0;
+
+#if 0
         /* print just the raw values read */
        printf("Acc(raw)=> X:%d Y:%d Z:%d gyro(raw)=> X:%d Y:%d Z:%d \n", \
-                   acc_value[0],acc_value[1],acc_value[2],gyro_value[2], \
-               gyro_value[1],gyro_value[2]);
+                   acc_value[0],acc_value[1],acc_value[2],gyro_value[0],gyro_value[1],gyro_value[2]);
        
        /* print the 'g' and '°/s' values */
-       printf("Acc(g)=> X:%f Y:%f Z:%f gyro(dps)=> X:%f Y:%f Z:%f \n", \
-               accx,accy,accz, \
-               gyrox,gyroy,gyroz);
+       printf("Acc(g)=> X:%.2f Y:%.2f Z:%.2f gyro(dps)=> X:%.2f Y:%.2f Z:%.2f \n", \
+               accx,accy,accz,gyrox,gyroy,gyroz);
+#endif
+
+#if 1
+       printf("%0.2f	%0.2f	%0.2f\n",accx,accy,accz);
+#endif
       
       /*wait for 250000 micro seconds, thats 250ms before going for another round */
-       usleep(250 * 1000);
+       usleep(50 * 1000);
     }
 
 }
