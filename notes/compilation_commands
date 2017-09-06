@@ -27,8 +27,8 @@ make CROSS_COMPILE=arm-linux-gnueabihf-  menuconfig
 
 STEP 4 : compile 
 
-make CROSS_COMPILE=arm-linux-gnueabihf- -j4  // -j4(4 core machine) will instructs the make tool to spawn 4 threads
-make CROSS_COMPILE=arm-linux-gnueabihf- -j8  // -j8(8 core machine) will instructs the make tool to spawn 8 threads
+make CROSS_COMPILE=arm-linux-gnueabihf- -j4  // -j4(4 core machine) will instruct the make tool to spawn 4 threads
+make CROSS_COMPILE=arm-linux-gnueabihf- -j8  // -j8(8 core machine) will instruct the make tool to spawn 8 threads
 
 
 ************************* linux compilation ***************************************************
@@ -105,5 +105,5 @@ ssh -l root 192.168.7.2
 
 
 
-# use this command to install a openssh server on your ubuntu host 
+# use this command to install an openssh server on your ubuntu host 
 sudo apt-get install openssh-server
