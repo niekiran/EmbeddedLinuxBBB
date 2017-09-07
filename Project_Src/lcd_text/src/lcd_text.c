@@ -333,6 +333,4 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-//https://dawes.wordpress.com/2009/12/23/twitter-to-lcd/
-//http://www.dinceraydin.com/lcd/commands.htm#entry
-//https://mil.ufl.edu/3744/docs/lcdmanual/commands.html
+
