@@ -5,30 +5,37 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-#include "lcd_text_scroll.h"
+#include "gpio_driver.h"
 #include "lcd_driver.h"
 
+
+/* This function does basic initialization for your lcd  */
 void lcd_init(void)
 {
+	uint8_t cmd=0;
 
-    gpio_write_value(GPIO_69_P8_9_EN_6,LCD_ENABLE);
+	//setting function
+    cmd= LCD_CMD_FUNCTION_SET | DATA_LEN_4 | DISPLAY_2_LINES | MATRIX_5_X_8;
+    lcd_send_command(cmd);
 
-    //Initialization of HD44780-based LCD (4-bit HW)
-    //lcd_send_command(0x33);
-    usleep(4 * 1000);
-//  lcd_send_command(0x32);
-    usleep(4 * 1000);
-    //Function Set 4-bit mode
-    lcd_send_command(0x28); //  0010 1000
-    //Display On/Off Control
-    lcd_send_command(0x0C);
-    //Entry mode set
-    lcd_send_command(0x06);
-    lcd_send_command(LCD_CLEAR_DISPALY);
-    //Minimum delay to wait before driving LCD module
-    usleep(200 * 1000);
+    /* either you read the Busy flag and wait until BF=0, or just wait for ~5ms as per data sheet */
+    usleep(INS_WAIT_TIME);
+
+    //setting entry mode of the LCD
+    cmd=LCD_CMD_ENTRY_MODESET | INC_CURSOR;
+    lcd_send_command(cmd);
+
+    usleep(INS_WAIT_TIME);
+
+    //setting display and cursor control options
+    cmd=LCD_CMD_DISPLAY_CURSOR_ONOFF_CONTROL | DISPLAY_ON | CURSOR_ON; //0x0e
+    lcd_send_command(cmd); //  0010 1000
+
+    usleep(INS_WAIT_TIME);
 
 
+
+    usleep(INS_WAIT_TIME);
 }
 
 /**
@@ -44,17 +51,18 @@ void lcd_locate(uint8_t row, uint8_t column)
   {
     case 1:
       /* Set cursor to 1st row address and add index*/
-      lcd_send_command(column |= 0x80);
+      lcd_send_command(column |= DDRAM_FIRST_LINE_BASE_ADDR);
       break;
     case 2:
       /* Set cursor to 2nd row address and add index*/
-        lcd_send_command(column |= 0x40 | 0x80);
+        lcd_send_command(column |= DDRAM_SECOND_LINE_BASE_ADDR);
       break;
     default:
       break;
   }
 }
 
+//call this function in order to make LCD latch the address lines in to its interal registers.
 void lcd_enable(void)
 {
     gpio_write_value(GPIO_69_P8_9_EN_6,LCD_ENABLE);
@@ -63,10 +71,12 @@ void lcd_enable(void)
 
 
 }
+
+
 void lcd_print_char(uint8_t ascii_Value)
 {
 
-    gpio_write_value(GPIO_66_P8_7_RS_4,CHAR_MODE);
+    gpio_write_value(GPIO_66_P8_7_RS_4,USER_DATA_MODE);
 
     //first send the msb
 
@@ -78,6 +88,7 @@ void lcd_print_char(uint8_t ascii_Value)
     gpio_write_value(LCD_DATABIT7,(data_msb & ( 1 << 3) ));
 
     lcd_enable();
+
     uint8_t data_lsb = (( ascii_Value & 0x0f )); // d7 d7 d5 d4
 
     gpio_write_value(LCD_DATABIT4,(data_lsb & ( 1 << 0) ));
@@ -92,12 +103,12 @@ void lcd_print_char(uint8_t ascii_Value)
 
 }
 
-void lcd_print_string(uint8_t *message)
+void lcd_print_string(char *message)
 {
 
       do
       {
-          lcd_print_char(*message++);
+          lcd_print_char((uint8_t)*message++);
       }
       while (*message != '\0');
 
@@ -124,6 +135,7 @@ the LCD like setting font, cursor position etc. */
     gpio_write_value(LCD_DATABIT7,(command_msb & ( 1 << 3) ));
 
     lcd_enable();
+
     uint8_t command_lsb = (( command & 0x0f )); // d7 d7 d5 d4
 
     gpio_write_value(LCD_DATABIT4,(command_lsb & ( 1 << 0) ));
@@ -132,8 +144,6 @@ the LCD like setting font, cursor position etc. */
     gpio_write_value(LCD_DATABIT7,(command_lsb & ( 1 << 3) ));
 
     lcd_enable();
-
-    usleep(2*1000);
 
 
 }

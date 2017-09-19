@@ -26,6 +26,7 @@ TODOs for the students
 #include <arpa/inet.h>
 
 #include "lcd_driver.h"
+#include "gpio_driver.h"
 #include "lcd_text_scroll.h"
 
 
@@ -43,140 +44,15 @@ P8.16                            GPIO_46          15(BKLTA)       Backlight anod
 P9.15                            GPIO_48          16(BKLTK)        Backlight cathode
 ============================================================================================================= */
 
-char *some_strings[5]=
+char* some_strings[]=
 {
     "Mahatma Gandhi said,",
-    "First they ignore you",
+    "First they ignore you,",
     "then they laugh at you ",
-    "then they fight you",
-    "then you win"
+    "then they fight with you,",
+    "then you win !",
 };
 
-char buffer[250];
-
-
-/*
- *  GPIO configure direction
- *  dir_value : 1 means 'out' , 0 means "in"
- */
-int gpio_configure_dir(uint32_t gpio_num, uint8_t dir_value)
-{
-    int fd;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/direction", gpio_num);
-
-    fd = open(buf, O_WRONLY);
-    if (fd < 0) {
-        perror("gpio direction configure\n");
-        return fd;
-    }
-
-    if (dir_value)
-        write(fd, "out", 4); //3+1  +1 for NULL character 
-    else
-        write(fd, "in", 3);
-
-    close(fd);
-    return 0;
-}
-
-/*
- *  GPIO write value
- *  out_value : can be either 0 or 1
- */
-int gpio_write_value(uint32_t gpio_num, uint8_t out_value)
-{
-    int fd;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/value", gpio_num);
-
-    fd = open(buf, O_WRONLY);
-    if (fd < 0) {
-        perror("gpio write value\n");
-        return fd;
-    }
-
-    if (out_value)
-        write(fd, "1", 2);
-    else
-        write(fd, "0", 2);
-
-    close(fd);
-    return 0;
-}
-
-/*
- *  GPIO read value
- */
-int gpio_read_value(uint32_t gpio_num)
-{
-    int fd;
-    uint8_t read_value=0;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/value", gpio_num);
-
-    fd = open(buf, O_WRONLY);
-    if (fd < 0) {
-        perror("gpio read value\n");
-        return fd;
-    }
-
-    read(fd, &read_value, 1);
-
-    close(fd);
-    return read_value;
-}
-
-
-/*
- *  GPIO configure the edge of trigger
- *  edge : rising, falling
- */
-int gpio_configure_edge(uint32_t gpio_num, char *edge)
-{
-    int fd;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/edge", gpio_num);
-
-    fd = open(buf, O_WRONLY);
-    if (fd < 0) {
-        perror("gpio configure edge\n");
-        return fd;
-    }
-
-    write(fd, edge, strlen(edge) + 1);
-    close(fd);
-    return 0;
-}
-
-/*
- *  Open the sys fs file corresponding to gpio number
- */
-int gpio_file_open(uint32_t gpio_num)
-{
-    int fd;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/value", gpio_num);
-
-    fd = open(buf, O_RDONLY | O_NONBLOCK );
-    if (fd < 0) {
-        perror("gpio file open\n");
-    }
-    return fd;
-}
-
-/*
- *  close a file
- */
-int gpio_file_close(int fd)
-{
-    return close(fd);
-}
 
 
 /* This function initializes all the gpios for this application
@@ -241,7 +117,7 @@ void tansition_graphics(void)
      sleep(1);
 
     lcd_locate(1,1);
-    lcd_send_command(LCD_CLEAR_DISPALY);
+    lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
 
     for (uint8_t n =0 ; n < 2 ; n++)
     {
@@ -259,16 +135,39 @@ void tansition_graphics(void)
     lcd_send_command(0x06);
     usleep(450 * 1000);
 
-    lcd_send_command(LCD_CLEAR_DISPALY);
+    lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
 
 }
 
+
+void dis_shift(void )
+{
+
+	uint8_t cmd;
+
+	lcd_locate(2,16);
+	lcd_send_command(LCD_CMD_CURSOR_DISPLAY_SHIFT_CONTROL| DISPLAY_SHIFT | SHIFT_TO_LEFT);
+
+#if 0
+    // 1 . Function set
+     cmd =  LCD_CMD_FUNCTION_SET | DATA_LEN_4| DISPLAY_1_LINE | MATRIX_5_X_8;
+     lcd_send_command(cmd);
+
+    //2. entry mode set 0 0 0 0 0 1 I/D S  0000 0111
+    cmd = LCD_CMD_ENTRY_MODESET | INC_CURSOR | ACCOMPANY_DISPLAY_SHIFT;
+    lcd_send_command(cmd);
+
+    //3. 0 0 0 0 1 DCB  0000_1110 0C
+    cmd = LCD_CMD_DISPLAY_CURSOR_ONOFF_CONTROL |DISPLAY_ON |CURSOR_OFF  ;
+    lcd_send_command(cmd);
+#endif
+
+}
 
 int main(int argc, char *argv[]) 
 {
 
     printf("Application to print text in scrollable fashion on LCD\n");
-    char *pstar ="**";
 
     initialize_all_gpios();
 
@@ -293,55 +192,52 @@ int main(int argc, char *argv[])
     if you are using an LCD with a built-in resistor for the backlight. If you are not, you must put a
     current-limiting resistor in-line with the anode or cathode pin. The datasheet for your device will
     generally tell you if you need to do this. */
+    uint8_t cmd=0;
 
     lcd_init();
-    lcd_send_command(LCD_CLEAR_DISPALY);
-    lcd_send_command(0x80);
-    lcd_send_command(LCD_CLEAR_DISPALY);
-    lcd_locate(1,1);
-    lcd_send_command(0x20);// this is for 4 bit 1 line
-    lcd_printf("**Welcome to BBB**\n");
-    sleep(1);
-   //  tansition_grapphics();
-    lcd_send_command(LCD_CLEAR_DISPALY);
 
-    lcd_send_command(0x20);// this is for 4 bit 1 line
-    lcd_send_command(0x07); //shift left .
-    lcd_locate(1,16);
-    uint8_t char_value=1;
-    uint8_t n=0;
-     while(1)
-      {
-         for(uint8_t i=0;i<2;i++)
-         {
+	//setting function
+    // only single line mode is chosen here , that means all the 80 characters of the DDRAM will be mapped to lcd line 1.
+    cmd= LCD_CMD_FUNCTION_SET | DATA_LEN_4 | DISPLAY_1_LINE | MATRIX_5_X_8;
+    lcd_send_command(cmd);
 
-            memcpy(buffer,some_strings[i],strlen(some_strings[i])+1);
-            printf("size :%d\n",strlen(some_strings[i])+1);
+    //3.display on/off control , no cursor
+    cmd = LCD_CMD_DISPLAY_CURSOR_ONOFF_CONTROL |DISPLAY_ON |CURSOR_OFF  ;
+    lcd_send_command(cmd);
+
+
+
+    lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
+    //lets start printing from extreme right end of first row of the lcd. .
+    lcd_locate( 1,17);
+
 #if 1
-            while(1)
-            {
+    char *ptr = NULL;
+    uint8_t i;
 
-                 char_value = buffer[n++];
-                 if(! char_value)
-                 {
-                     lcd_print_string(pstar);
-                     break;
-                 }
-                 printf("%d\n",char_value);
-                 lcd_print_char(char_value);
-                 lcd_send_command(0x07);
-                 usleep(300 * 1000);
-            }
+    while(1)
+    {
+    	//we have total five strings.
+		for ( i = 0 ;i < 5 ; i++)
+		 {
+			//print till each string meets NULL char
+		   ptr= some_strings[i];
+			while( *ptr != '\0' )
+			{
 
+				lcd_print_char((uint8_t)*ptr);
+				//printing one character at a time and then left shifting by sending this command.
+				cmd = LCD_CMD_CURSOR_DISPLAY_SHIFT_CONTROL | DISPLAY_SHIFT | SHIFT_TO_LEFT ;
+				lcd_send_command(cmd);
+				ptr++;
+				usleep(250 * 1000);
 
-            n=0;
-            memset(buffer,0,250);
+			}
+		 }
+    }
+
 #endif
 
-         }
-       }
-
-return 0;
 
 }
 

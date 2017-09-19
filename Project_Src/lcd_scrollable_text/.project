@@ -23,4 +23,26 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/gpio_driver.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/gpio/gpio_driver.c</locationURI>
+		</link>
+		<link>
+			<name>src/gpio_driver.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/gpio/gpio_driver.h</locationURI>
+		</link>
+		<link>
+			<name>src/lcd_driver.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/lcd/lcd_driver.c</locationURI>
+		</link>
+		<link>
+			<name>src/lcd_driver.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/lcd/lcd_driver.h</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -410,7 +410,7 @@ int main(int argc, char *argv[])
             /*we want POLLPRI event to be generated */
             fdset[1].events = POLLPRI;
 
-            /* Keep waiting for the events , it happnes when you press the button */
+            /* Keep waiting for the events , it happens when you press the button */
             rc = poll(fdset, nfds, timeout); //program blocks here until you press the button or until timeout
 
             if (rc < 0) 

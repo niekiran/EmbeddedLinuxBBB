@@ -4,8 +4,8 @@
  Author      : Kiran N < niekiran@gmail.com >
  Version     :
  Copyright   : Your copyright notice
- Description : This Application prints your message on the 16x2 LCD
- TODOs for the students :
+ Description : This Application prints your message on the 16x2 LCD along with ip address of BBB, date and time
+ TODOs for the students : The LCD is not displaying correct time & date .. Fix with real time details
  ============================================================================
  */
 #include <stdio.h>
@@ -27,166 +27,25 @@
 
 #include "lcd_text.h"
 #include "lcd_driver.h"
+#include "gpio_driver.h"
 
 /*=========================================================================================================
-BBB_expansion_heade_P8_pins     GPIO number     16x2 LCD pin      Purpose 
+BBB_expansion_header_pins       GPIO number     16x2 LCD pin      Purpose 
 ===========================================================================================================
 P8.7                             GPIO_66          4(RS)           Register selection (Character vs. Command)
 P8.8                             GPIO_67          5(RW)           Read/write 
 P8.9                             GPIO_69          6(EN)           Enable
-P8.10                            GPIO_68          7(D4)           Data line 4
-P8.11                            GPIO_45          8(D5)           Data line 5
-P8.12                            GPIO_44          9(D6)           Data line 6
-P8.14                            GPIO_26          10(D7)          Data line 7 
-P8.16                            GPIO_46          15(BKLTA)       Backlight anode
-P9.15                            GPIO_48          16(BKLTK)        Backlight cathode
+P8.10                            GPIO_68          11(D4)          Data line 4
+P8.11                            GPIO_45          12(D5)          Data line 5
+P8.12                            GPIO_44          13(D6)          Data line 6
+P8.14                            GPIO_26          14(D7)          Data line 7 
+P8.16                            GPIO_46          15(BKLTA)       Backlight anode(+)
+P9.15                            GPIO_48          16(BKLTK)       Backlight cathode(-)
+
+P9.0                              ----            1(VSS/GND)      Ground
+P9.7                              ----            2(sys_VDD +5V)  +5V supply 
 ============================================================================================================= */
 
-
-/*
- *  GPIO export pin
- *
- */
-int gpio_export(uint32_t gpio_num)
-{
-	int fd, len;
-	char buf[SOME_BYTES];
-
-	fd = open(SYS_GPIO_PATH "/export", O_WRONLY);
-	if (fd < 0) {
-		perror(" error opening export file\n");
-		return fd;
-	}
-
-	len = snprintf(buf, sizeof(buf), "%d", gpio_num);
-	write(fd, buf, len);
-	close(fd);
-
-	return 0;
-}
-
-/*
- *  GPIO configure direction
- *  dir_value : 1 means 'out' , 0 means "in"
- */
-int gpio_configure_dir(uint32_t gpio_num, uint8_t dir_value)
-{
-    int fd;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/direction", gpio_num);
-
-    fd = open(buf, O_WRONLY);
-    if (fd < 0) {
-        perror("gpio direction configure\n");
-        return fd;
-    }
-
-    if (dir_value)
-        write(fd, "out", 4); //3+1  +1 for NULL character 
-    else
-        write(fd, "in", 3);
-
-    close(fd);
-    return 0;
-}
-
-/*
- *  GPIO write value
- *  out_value : can be either 0 or 1
- */
-int gpio_write_value(uint32_t gpio_num, uint8_t out_value)
-{
-    int fd;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/value", gpio_num);
-
-    fd = open(buf, O_WRONLY);
-    if (fd < 0) {
-        perror("gpio write value\n");
-        return fd;
-    }
-
-    if (out_value)
-        write(fd, "1", 2);
-    else
-        write(fd, "0", 2);
-
-    close(fd);
-    return 0;
-}
-
-/*
- *  GPIO read value
- */
-int gpio_read_value(uint32_t gpio_num)
-{
-    int fd;
-    uint8_t read_value=0;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/value", gpio_num);
-
-    fd = open(buf, O_WRONLY);
-    if (fd < 0) {
-        perror("gpio read value\n");
-        return fd;
-    }
-
-    read(fd, &read_value, 1);
-
-    close(fd);
-    return read_value;
-}
-
-
-/*
- *  GPIO configure the edge of trigger
- *  edge : rising, falling
- */
-int gpio_configure_edge(uint32_t gpio_num, char *edge)
-{
-    int fd;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/edge", gpio_num);
-
-    fd = open(buf, O_WRONLY);
-    if (fd < 0) {
-        perror("gpio configure edge\n");
-        return fd;
-    }
-
-    write(fd, edge, strlen(edge) + 1);
-    close(fd);
-    return 0;
-}
-
-/*
- *  Open the sys fs file corresponding to gpio number
- */
-int gpio_file_open(uint32_t gpio_num)
-{
-    int fd;
-    char buf[SOME_BYTES];
-
-    snprintf(buf, sizeof(buf), SYS_GPIO_PATH "/gpio%d/value", gpio_num);
-
-    fd = open(buf, O_RDONLY | O_NONBLOCK );
-    if (fd < 0) {
-        perror("gpio file open\n");
-    }
-    return fd;
-}
-
-/*
- *  close a file
- */
-int gpio_file_close(int fd)
-{
-    return close(fd);
-}
 
 
 /* This function initializes all the gpios for this application
@@ -218,6 +77,24 @@ int initialize_all_gpios(void)
 }
 
 
+void print_time_and_date()
+{
+	time_t rawtime;
+	struct tm * timeinfo;
+
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+
+    lcd_send_command(DDRAM_FIRST_LINE_BASE_ADDR);
+
+	lcd_printf("%d-%d-%d",1900+timeinfo->tm_year, timeinfo->tm_mon, timeinfo->tm_mday);
+
+   lcd_send_command(DDRAM_SECOND_LINE_BASE_ADDR);
+
+   lcd_printf("%d:%d:%d",timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+
+}
+
 /* This function gathers the ip address of the system and prints it on LCD */
 int print_ip_address()
 {
@@ -239,7 +116,13 @@ int print_ip_address()
     close(fd);
 
     //display result
-    lcd_printf("%s - %s\n" , iface , inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr) );
+    // 1. print the interface name on the first line
+    lcd_send_command(DDRAM_FIRST_LINE_BASE_ADDR);
+    lcd_print_string((uint8_t *)iface);
+    lcd_send_command(DDRAM_SECOND_LINE_BASE_ADDR);
+    lcd_print_string((uint8_t *)inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr));
+
+ //   lcd_printf("%s - %s\n" , iface , inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr) );
 
     return 0;
 }
@@ -251,7 +134,7 @@ void tansition_graphics(void)
 	 sleep(1);
 
     lcd_locate(1,1);
-    lcd_send_command(LCD_CLEAR_DISPALY);
+    lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
 
     for (uint8_t n =0 ; n < 2 ; n++)
     {
@@ -269,7 +152,7 @@ void tansition_graphics(void)
     lcd_send_command(0x06);
     usleep(450 * 1000);
 
-    lcd_send_command(LCD_CLEAR_DISPALY);
+    lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
 
 }
 
@@ -287,6 +170,7 @@ int main(int argc, char *argv[])
     }
     else
     {
+    	print_time_and_date();
     	initialize_all_gpios();
 
         gpio_write_value(GPIO_66_P8_7_RS_4,GPIO_LOW_VALUE);
@@ -310,10 +194,9 @@ int main(int argc, char *argv[])
         current-limiting resistor in-line with the anode or cathode pin. The datasheet for your device will
         generally tell you if you need to do this. */
 
+
         lcd_init();
-        lcd_send_command(LCD_CLEAR_DISPALY);
-        lcd_send_command(CGRAM_address_start);
-        lcd_send_command(LCD_CLEAR_DISPALY);
+        lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
         lcd_locate(1,1);
         
         //This is the message given by user 
@@ -321,11 +204,13 @@ int main(int argc, char *argv[])
         
         while(1)
         {
-             lcd_printf("**Welcome to BBB**\n");
+             lcd_printf("BBB LCD Demo\n");
              tansition_graphics();
              print_ip_address();
              tansition_graphics();
              lcd_printf(msg_buf);
+             tansition_graphics();
+             print_time_and_date();
              tansition_graphics();
         }
     }

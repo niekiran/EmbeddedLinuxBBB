@@ -4,7 +4,7 @@
  Author      : Kiran
  Version     :
  Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
+ Description : TODO:Read/Modify and display  BBB's EEPROM Contents
  ============================================================================
  */
 
