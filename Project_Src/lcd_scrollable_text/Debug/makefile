@@ -23,19 +23,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: lcd_scrollable_text
+all: lcd_scrolling_text
 
 # Tool invocations
-lcd_scrollable_text: $(OBJS) $(USER_OBJS)
+lcd_scrolling_text: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross GCC Linker'
-	arm-linux-gnueabihf-gcc  -o "lcd_scrollable_text" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-linux-gnueabihf-gcc  -o "lcd_scrolling_text" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) lcd_scrollable_text
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) lcd_scrolling_text
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -29,22 +29,18 @@ void lcd_init(void)
 
     //setting display and cursor control options
     cmd=LCD_CMD_DISPLAY_CURSOR_ONOFF_CONTROL | DISPLAY_ON | CURSOR_ON; //0x0e
-    lcd_send_command(cmd); //  0010 1000
+    lcd_send_command(cmd);
 
     usleep(INS_WAIT_TIME);
 
-
-
-    usleep(INS_WAIT_TIME);
 }
 
 /**
-  * @brief  Set Cursor to a specified location given by row and column information
+  * @brief  Set Lcd to a specified location given by row and column information
   * @param  Row Number (1 to 2)
   * @param  Column Number (1 to 16) Assuming a 2 X 16 characters display
-  * @retval None
   */
-void lcd_locate(uint8_t row, uint8_t column)
+void lcd_set_cursor(uint8_t row, uint8_t column)
 {
   column--;
   switch (row)
@@ -62,13 +58,12 @@ void lcd_locate(uint8_t row, uint8_t column)
   }
 }
 
-//call this function in order to make LCD latch the address lines in to its interal registers.
+//call this function in order to make LCD latch the data lines in to its internal registers.
 void lcd_enable(void)
 {
     gpio_write_value(GPIO_69_P8_9_EN_6,LCD_ENABLE);
     usleep(2 * 1000); //2ms delay
     gpio_write_value(GPIO_69_P8_9_EN_6,LCD_DISABLE);
-
 
 }
 
@@ -89,7 +84,8 @@ void lcd_print_char(uint8_t ascii_Value)
 
     lcd_enable();
 
-    uint8_t data_lsb = (( ascii_Value & 0x0f )); // d7 d7 d5 d4
+
+    uint8_t data_lsb = (( ascii_Value & 0x0f )); // d3 d2 d1 d0
 
     gpio_write_value(LCD_DATABIT4,(data_lsb & ( 1 << 0) ));
     gpio_write_value(LCD_DATABIT5,(data_lsb & ( 1 << 1) ));
@@ -98,9 +94,7 @@ void lcd_print_char(uint8_t ascii_Value)
 
     lcd_enable();
 
-    usleep(2 * 1000);
-
-
+    usleep(5 * 1000);
 }
 
 void lcd_print_string(char *message)
@@ -127,7 +121,7 @@ the LCD like setting font, cursor position etc. */
 
     //first send the msb
 
-    uint8_t command_msb = ((command >> 4) & 0X0f ); // d7 d7 d5 d4
+    uint8_t command_msb = ((command >> 4) & 0X0f ); // d7 d6 d5 d4
 
     gpio_write_value(LCD_DATABIT4,(command_msb & ( 1 << 0) ));
     gpio_write_value(LCD_DATABIT5,(command_msb & ( 1 << 1) ));
@@ -136,7 +130,9 @@ the LCD like setting font, cursor position etc. */
 
     lcd_enable();
 
-    uint8_t command_lsb = (( command & 0x0f )); // d7 d7 d5 d4
+    //now send the lsb
+
+    uint8_t command_lsb = (( command & 0x0f )); // d3 d2 d1 d0
 
     gpio_write_value(LCD_DATABIT4,(command_lsb & ( 1 << 0) ));
     gpio_write_value(LCD_DATABIT5,(command_lsb & ( 1 << 1) ));
@@ -144,7 +140,6 @@ the LCD like setting font, cursor position etc. */
     gpio_write_value(LCD_DATABIT7,(command_lsb & ( 1 << 3) ));
 
     lcd_enable();
-
 
 }
 

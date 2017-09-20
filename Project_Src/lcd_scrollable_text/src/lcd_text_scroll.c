@@ -4,9 +4,9 @@
  Author      : Kiran N <niekiran@gmail.com >
  Version     : 1.0
  Copyright   : Your copyright notice
- Description : This application prints pre-stored strings in a scrollable format on the 16x2 LCD
+ Description : This application prints pre-stored strings  on a LCD panel with shifting/scrolling effect
 TODOs for the students 
-1) Take multiple strings as a command line argument and print in scrollable fashion instead of pre-stored. 
+1) Take multiple strings as a command line argumentsinstead of pre-stored.
  ============================================================================*/
 #include <stdio.h>
 #include <stdlib.h>
@@ -116,7 +116,7 @@ void tansition_graphics(void)
 
      sleep(1);
 
-    lcd_locate(1,1);
+    lcd_set_cursor(1,1);
     lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
 
     for (uint8_t n =0 ; n < 2 ; n++)
@@ -127,11 +127,11 @@ void tansition_graphics(void)
             usleep(75*1000);
 
         }
-        lcd_locate(2,16);
+        lcd_set_cursor(2,16);
         lcd_send_command(0x04);
     }
     
-    lcd_locate(1,1);
+    lcd_set_cursor(1,1);
     lcd_send_command(0x06);
     usleep(450 * 1000);
 
@@ -140,34 +140,11 @@ void tansition_graphics(void)
 }
 
 
-void dis_shift(void )
-{
-
-	uint8_t cmd;
-
-	lcd_locate(2,16);
-	lcd_send_command(LCD_CMD_CURSOR_DISPLAY_SHIFT_CONTROL| DISPLAY_SHIFT | SHIFT_TO_LEFT);
-
-#if 0
-    // 1 . Function set
-     cmd =  LCD_CMD_FUNCTION_SET | DATA_LEN_4| DISPLAY_1_LINE | MATRIX_5_X_8;
-     lcd_send_command(cmd);
-
-    //2. entry mode set 0 0 0 0 0 1 I/D S  0000 0111
-    cmd = LCD_CMD_ENTRY_MODESET | INC_CURSOR | ACCOMPANY_DISPLAY_SHIFT;
-    lcd_send_command(cmd);
-
-    //3. 0 0 0 0 1 DCB  0000_1110 0C
-    cmd = LCD_CMD_DISPLAY_CURSOR_ONOFF_CONTROL |DISPLAY_ON |CURSOR_OFF  ;
-    lcd_send_command(cmd);
-#endif
-
-}
 
 int main(int argc, char *argv[]) 
 {
 
-    printf("Application to print text in scrollable fashion on LCD\n");
+    printf("Application to print text in scrollable  fashion on LCD\n");
 
     initialize_all_gpios();
 
@@ -206,10 +183,9 @@ int main(int argc, char *argv[])
     lcd_send_command(cmd);
 
 
-
     lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
     //lets start printing from extreme right end of first row of the lcd. .
-    lcd_locate( 1,17);
+    lcd_set_cursor( 1,17);
 
 #if 1
     char *ptr = NULL;
@@ -224,13 +200,12 @@ int main(int argc, char *argv[])
 		   ptr= some_strings[i];
 			while( *ptr != '\0' )
 			{
-
 				lcd_print_char((uint8_t)*ptr);
 				//printing one character at a time and then left shifting by sending this command.
 				cmd = LCD_CMD_CURSOR_DISPLAY_SHIFT_CONTROL | DISPLAY_SHIFT | SHIFT_TO_LEFT ;
 				lcd_send_command(cmd);
 				ptr++;
-				usleep(250 * 1000);
+				usleep(500 * 1000);
 
 			}
 		 }

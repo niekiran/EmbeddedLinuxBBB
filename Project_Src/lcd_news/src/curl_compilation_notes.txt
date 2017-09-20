@@ -12,7 +12,7 @@ $ export CROSS_COMPILE="arm-linux-gnueabihf"
 5) export CROSS_COMPILE="arm-linux-gnueabihf"
 6) ./configure --prefix=${ROOTDIR}/build --target=${CROSS_COMPILE} --host=${CROSS_COMPILE} --build=i586-pc-linux-gnu --with-ssl --with-zlib
 
-or use simpley 
+or use simply 
 ./configure --prefix=${ROOTDIR}/build --target=${CROSS_COMPILE} --host=${CROSS_COMPILE}
 
 7) make 

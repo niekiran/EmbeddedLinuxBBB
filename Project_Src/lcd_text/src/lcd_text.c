@@ -118,9 +118,9 @@ int print_ip_address()
     //display result
     // 1. print the interface name on the first line
     lcd_send_command(DDRAM_FIRST_LINE_BASE_ADDR);
-    lcd_print_string((uint8_t *)iface);
+    lcd_print_string((char *)iface);
     lcd_send_command(DDRAM_SECOND_LINE_BASE_ADDR);
-    lcd_print_string((uint8_t *)inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr));
+    lcd_print_string((char *)inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr));
 
  //   lcd_printf("%s - %s\n" , iface , inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr) );
 
@@ -133,7 +133,7 @@ void tansition_graphics(void)
 
 	 sleep(1);
 
-    lcd_locate(1,1);
+    lcd_set_cursor(1,1);
     lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
 
     for (uint8_t n =0 ; n < 2 ; n++)
@@ -144,11 +144,11 @@ void tansition_graphics(void)
             usleep(75*1000);
 
         }
-        lcd_locate(2,16);
+        lcd_set_cursor(2,16);
         lcd_send_command(0x04);
     }
     
-    lcd_locate(1,1);
+    lcd_set_cursor(1,1);
     lcd_send_command(0x06);
     usleep(450 * 1000);
 
@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-    	print_time_and_date();
+
     	initialize_all_gpios();
 
         gpio_write_value(GPIO_66_P8_7_RS_4,GPIO_LOW_VALUE);
@@ -196,8 +196,11 @@ int main(int argc, char *argv[])
 
 
         lcd_init();
+
+
         lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
-        lcd_locate(1,1);
+
+        lcd_set_cursor(1,1);
         
         //This is the message given by user 
         strncpy(msg_buf,argv[1],32);

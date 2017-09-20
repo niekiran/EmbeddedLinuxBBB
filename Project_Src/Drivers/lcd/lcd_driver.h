@@ -114,12 +114,12 @@ and read. */
 /* HD44780 CGRAM address start */
 #define CGRAM_address_start 0x40
 
-#define INS_WAIT_TIME ( 5 * 1000)
+#define INS_WAIT_TIME ( 8 * 1000)
 
 
 //public function prototypes
 void lcd_init(void);
-void lcd_locate(uint8_t row, uint8_t column);
+void lcd_set_cursor(uint8_t row, uint8_t column);
 void lcd_enable(void);
 void lcd_print_char(uint8_t ascii_Value);
 void lcd_print_string(char *message);

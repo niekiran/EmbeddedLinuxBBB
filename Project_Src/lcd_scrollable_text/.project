@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>lcd_scrollable_text</name>
+	<name>lcd_scrolling_text</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -27,22 +27,28 @@
 		<link>
 			<name>src/gpio_driver.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/gpio/gpio_driver.c</locationURI>
+			<locationURI>copy_PARENT/Drivers/gpio/gpio_driver.c</locationURI>
 		</link>
 		<link>
 			<name>src/gpio_driver.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/gpio/gpio_driver.h</locationURI>
+			<locationURI>copy_PARENT/Drivers/gpio/gpio_driver.h</locationURI>
 		</link>
 		<link>
 			<name>src/lcd_driver.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/lcd/lcd_driver.c</locationURI>
+			<locationURI>copy_PARENT/Drivers/lcd/lcd_driver.c</locationURI>
 		</link>
 		<link>
 			<name>src/lcd_driver.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/lcd/lcd_driver.h</locationURI>
+			<locationURI>copy_PARENT/Drivers/lcd/lcd_driver.h</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>file:/E:/fastBit/courses/embedded_linux/EmbeddedLinuxBBB/Project_Src</value>
+		</variable>
+	</variableList>
 </projectDescription>
