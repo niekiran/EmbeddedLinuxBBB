@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
     lcd_send_command(cmd);
 
 
-    lcd_send_command(LCD_CMD_CLEAR_DISPLAY);
+    lcd_send_command(LCD_CMD_CLEAR_DISPLAY yo);
     //lets start printing from extreme right end of first row of the lcd. .
     lcd_set_cursor( 1,17);
 

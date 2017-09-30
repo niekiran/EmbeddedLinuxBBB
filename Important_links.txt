@@ -1,0 +1,23 @@
+
+These are the important URLs mentioned in the course 
+
+Course Repository 
+https://github.com/niekiran/EmbeddedLinuxBBB
+
+Virtual  Box download
+https://www.virtualbox.org/wiki/Downloads
+
+Angstrom Demo images for BBB
+http://downloads.angstrom-distribution.org/demo/beaglebone/
+
+Uboot Source code 
+ftp://ftp.denx.de/pub/u-boot/
+
+
+TI AM335x Driver guide
+http://processors.wiki.ti.com/index.php/AM335x_LCD_Controller_Driver%27s_Guide
+http://processors.wiki.ti.com/index.php/AM335x_Touchscreen_Driver%27s_Guide
+http://processors.wiki.ti.com/index.php/AM335x_McSPI_Driver%27s_Guide
+http://processors.wiki.ti.com/index.php/AM335x_MMC/SD_Driver%27s_Guide
+http://processors.wiki.ti.com/index.php/AM335X_DCAN_Driver_Guide
+http://processors.wiki.ti.com/index.php/AM335x_ADC_Driver%27s_Guide
