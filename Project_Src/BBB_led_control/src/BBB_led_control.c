@@ -80,7 +80,7 @@ int write_brightness_values(uint8_t led_no, int value)
 	
 	/* Write the 'value' in to the file designated by 'fd' */
 	/*Returns the number of bytes that were written. 
-	  If value is negative, then the system call returned an error.
+	  If value is negative, then the system call returns an error.
 	*/
 	ret = write(fd, (void *)&value, sizeof(value) );
 	if ( ret <= 0)
