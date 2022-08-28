@@ -240,7 +240,7 @@ int initialize_all_gpios(void)
 int initialize_button_gpio(void)
 {
     gpio_configure_dir(GPIO_49,GPIO_DIR_IN);
-    gpio_write_value(GPIO_68, GPIO_LOW_VALUE );
+    gpio_write_value(GPIO_49, GPIO_LOW_VALUE );
     gpio_configure_edge(GPIO_49,"rising");
     return 0;
 }
