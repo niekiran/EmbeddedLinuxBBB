@@ -11,7 +11,7 @@ Angstrom Demo images for BBB
 http://downloads.angstrom-distribution.org/demo/beaglebone/
 
 Uboot Source code 
-ftp://ftp.denx.de/pub/u-boot/
+https://ftp.denx.de/pub/u-boot/
 
 
 TI AM335x Driver guide
